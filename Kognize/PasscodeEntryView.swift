@@ -80,7 +80,7 @@ struct PasscodeEntryView: View {
             } label: {
                 Text("\(digit)")
                     .font(.title.weight(.medium))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.kognizeAccentDark)
                     .frame(width: 72, height: 72)
                     .background(Circle().fill(Color.kognizePurple.opacity(0.12)))
             }
