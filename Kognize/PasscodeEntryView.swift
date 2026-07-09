@@ -16,7 +16,7 @@ private enum KeypadKey: Hashable {
     case enter
 }
 
-private enum PasscodeFeedback {
+enum PasscodeFeedback {
     case correct
     case incorrect
 
@@ -30,12 +30,12 @@ private enum PasscodeFeedback {
 
 struct PasscodeEntryView: View {
     let onSuccess: () -> Void
+    @Binding var feedback: PasscodeFeedback?
 
     private let correctPasscode = [1, 2, 3, 4]
 
     @State private var enteredDigits: [Int] = []
     @State private var keypadLayout: [KeypadKey] = Self.shuffledLayout()
-    @State private var feedback: PasscodeFeedback?
 
     var body: some View {
         VStack(spacing: 28) {
@@ -68,13 +68,6 @@ struct PasscodeEntryView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(red: 0.05, green: 0.05, blue: 0.05).ignoresSafeArea())
-        .overlay(
-            Rectangle()
-                .stroke(feedback?.color ?? .clear, lineWidth: 6)
-                .blur(radius: 10)
-                .ignoresSafeArea()
-                .allowsHitTesting(false)
-        )
         .animation(.easeInOut(duration: 0.2), value: feedback != nil)
     }
 
@@ -169,6 +162,14 @@ struct PasscodeEntryView: View {
     }
 }
 
+private struct PasscodeEntryPreviewContainer: View {
+    @State private var feedback: PasscodeFeedback?
+
+    var body: some View {
+        PasscodeEntryView(onSuccess: {}, feedback: $feedback)
+    }
+}
+
 #Preview {
-    PasscodeEntryView(onSuccess: {})
+    PasscodeEntryPreviewContainer()
 }

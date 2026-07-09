@@ -24,16 +24,29 @@ struct FaceIDGateView: View {
     let onSuccess: () -> Void
 
     @State private var faceIDStatus: FaceIDStatus = .idle
+    // Owned here (not by PasscodeEntryView) so the glow can be drawn at the
+    // true screen edge, above the Face ID icon row. Face ID has no path to
+    // this — only PasscodeEntryView's submit logic ever sets it — so the
+    // glow can only ever be a passcode result, never a biometric one.
+    @State private var passcodeFeedback: PasscodeFeedback?
 
     var body: some View {
         VStack(spacing: 0) {
             faceIDIndicator
                 .padding(.top, 8)
 
-            PasscodeEntryView(onSuccess: onSuccess)
+            PasscodeEntryView(onSuccess: onSuccess, feedback: $passcodeFeedback)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(red: 0.05, green: 0.05, blue: 0.05).ignoresSafeArea())
+        .overlay(
+            RoundedRectangle(cornerRadius: 55, style: .continuous)
+                .stroke(passcodeFeedback?.color ?? .clear, lineWidth: 6)
+                .blur(radius: 10)
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
+        )
+        .animation(.easeInOut(duration: 0.2), value: passcodeFeedback != nil)
         .onAppear(perform: attemptFaceID)
     }
 
