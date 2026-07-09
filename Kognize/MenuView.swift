@@ -36,18 +36,6 @@ struct MenuView: View {
                     }
 
                     NavigationLink {
-                        SpendingStressView()
-                    } label: {
-                        Label("Spending Context", systemImage: "brain.head.profile")
-                    }
-
-                    NavigationLink {
-                        JournalView()
-                    } label: {
-                        Label("Journal", systemImage: "book.closed")
-                    }
-
-                    NavigationLink {
                         NotificationsView()
                     } label: {
                         Label("Notifications", systemImage: "bell")

@@ -8,8 +8,13 @@
 
 import SwiftUI
 
+private func defaultDigestTime() -> Date {
+    Calendar.current.date(bySettingHour: 20, minute: 0, second: 0, of: Date()) ?? Date()
+}
+
 struct NotificationsView: View {
     @State private var isDailyDigestOn = true
+    @State private var digestTime = defaultDigestTime()
     @State private var isScoreAlertsOn = true
     @State private var isGoalRemindersOn = true
     @State private var isSpendingAlertsOn = false
@@ -17,7 +22,11 @@ struct NotificationsView: View {
     var body: some View {
         List {
             Section("Daily") {
-                Toggle("Daily Digest (8pm)", isOn: $isDailyDigestOn)
+                Toggle("Daily Digest", isOn: $isDailyDigestOn)
+
+                if isDailyDigestOn {
+                    DatePicker("Digest Time", selection: $digestTime, displayedComponents: .hourAndMinute)
+                }
             }
 
             Section("Alerts") {

@@ -2,9 +2,9 @@
 //  MainTabView.swift
 //  Kognize
 //
-//  The post-unlock shell: bottom tab bar (Dashboard, Ask Kog, Goals) with a
-//  floating hamburger button, fixed in the top-right regardless of tab or
-//  scroll position, opening the menu sheet.
+//  The post-unlock shell: bottom tab bar (Dashboard, Ask Kog, Goals,
+//  Journal) with a floating hamburger button, fixed in the top-right
+//  regardless of tab or scroll position, opening the menu sheet.
 //
 
 import SwiftUI
@@ -25,6 +25,9 @@ struct MainTabView: View {
 
                 GoalsView()
                     .tabItem { Label("Goals", systemImage: "target") }
+
+                JournalView()
+                    .tabItem { Label("Journal", systemImage: "book.closed") }
             }
             .tint(Color.kognizePurple)
 

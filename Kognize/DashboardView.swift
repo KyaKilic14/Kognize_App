@@ -99,7 +99,7 @@ struct DashboardView: View {
         } label: {
             Text(editMode == .active ? "Done" : "Edit Dashboard")
                 .font(.headline)
-                .foregroundStyle(.primary)
+                .foregroundStyle(editMode == .active ? .white : .primary)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .background(

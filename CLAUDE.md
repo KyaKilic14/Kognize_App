@@ -153,9 +153,10 @@ postmortem.
 ```
 iOS App (SwiftUI)
   |-- Face ID gate + disclaimer splash
-  |-- Bottom tab bar: Dashboard / Ask Kog / Goals
+  |-- Bottom tab bar: Dashboard / Ask Kog / Goals / Journal (Journal
+  |   includes Spending Context as an in-screen section)
   |-- Floating hamburger menu: Profile, Connected Accounts, App Security,
-  |   Themes, Subscription, Send Feedback
+  |   Notifications, Themes, Subscription, Send Feedback
   |
 Thin Backend (orchestration only, minimal persistence)
   |-- Aggregator layer (TrueLayer / Yapily for UK Open Banking; Trading212 API for investments)
@@ -203,19 +204,36 @@ data/prompt layer, so building one builds most of the other.
 
 ## App navigation & design
 
-- **Bottom tab bar:** Dashboard, Ask Kog, Goals. Accounts is deliberately *not* a tab — it's a
-  card on Dashboard that drills into `AccountsDetailView`. Dashboard shows only the most
-  necessary data at a glance; every area goes deeper on tap rather than living inline.
+- **Bottom tab bar:** Dashboard, Ask Kog, Goals, Journal. Accounts is deliberately *not* a tab —
+  it's a card on Dashboard that drills into `AccountsDetailView`. Dashboard shows only the most
+  necessary data at a glance; every area goes deeper on tap rather than living inline. Journal
+  contains Spending Context as an in-screen segmented section (moved out of the hamburger menu —
+  important enough to live in the tab bar, and conceptually part of the same "context for Kog"
+  feature).
 - **Floating hamburger menu** (top right, fixed regardless of tab/scroll): Profile, Connected
-  Accounts management, App Security, Themes, Subscription, Send Feedback. Items without a real
-  screen yet route to `ComingSoonView` rather than dead-ending.
-- **Color system:** `Color+Kognize.swift` — `kognizeBackground` (near-black), `kognizePurple`
-  (the "dark midnight electric purple" accent — buttons, active states, score ring, highlights),
-  `kognizePurpleDeep` (reserved for future gradients). Accent-only on purpose: background stays
-  dark, per Kya's call over a full purple gradient or score-card-only glow.
-- **Dark only for now:** `.preferredColorScheme(.dark)` is forced app-wide in `KognizeApp.swift`.
-  Themes (light/dark/custom) is a planned hamburger item — when built, this hardcoded line goes
-  away in favor of a real setting.
+  Accounts management, App Security, Notifications, Themes, Subscription, Send Feedback. Items
+  without a real screen yet route to `ComingSoonView` rather than dead-ending.
+- **Toolbar buttons go leading (top-left), never trailing.** The hamburger button is always
+  pinned top-right across every tab and every pushed screen within a tab's `NavigationStack` (it
+  doesn't get covered by navigation pushes, only by modal sheets). Any screen-level action button
+  (e.g. Goals' add-goal "+", Journal's add-entry "+") must use `.navigationBarLeading`, never
+  `.navigationBarTrailing`, or it visually collides with the hamburger. Check new screens for
+  this before adding a trailing toolbar item.
+- **Color system:** `Color+Kognize.swift` + `ThemeManager.swift`. `kognizeBackground` is a real
+  adaptive color (near-black in dark mode, soft off-white in light mode). `kognizePurple` is a
+  computed property reading live from `ThemeManager.shared.accentColor` — every existing call
+  site updates automatically when the user changes accent, no per-screen code needed.
+  `kognizePurpleDeep` is a fixed value, reserved for future gradients.
+- **Theming is real and functional**, built in Settings → Themes: accent color (5 presets) and
+  System/Light/Dark appearance both actually change the live app, persisted via `UserDefaults`
+  (app preference, not financial data — doesn't need Keychain). `AppRootView` reads
+  `ThemeManager.shared.appearanceMode.colorScheme` and applies `.preferredColorScheme` reactively
+  (via `@Observable` tracking) rather than `KognizeApp` hardcoding `.dark`. Text/card colors
+  across the app use SwiftUI's semantic `.primary`/`.secondary`, which adapt automatically — the
+  only places that stay hardcoded `.white` are button labels sitting on a **solid** purple/red
+  fill (Disclaimer's CTA, Goals' "Add a Goal", the primary Add-Goal-flow button, Spending
+  Context's Save, Menu's Log Out, and the user's own chat bubble in Ask Kog) — those read fine on
+  a saturated fill regardless of theme, translucent/tinted fills do not and must adapt.
 - **Sign Out** (in Profile) is real, not a placeholder: it resets the app back to the disclaimer
   screen. No auth backend needed for that to be genuine behavior.
 - **Noted for later, not scheduled yet:** Kya flagged that an account creation / sign-in flow
