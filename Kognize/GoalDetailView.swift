@@ -24,7 +24,7 @@ struct GoalRow: View {
                 Spacer()
                 Text(goal.type.rawValue)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
             }
 
             ProgressView(value: progress)
@@ -32,7 +32,7 @@ struct GoalRow: View {
 
             Text("£\(Int(goal.currentAmount)) of £\(Int(goal.targetAmount))")
                 .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
         }
         .padding(18)
         .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.primary.opacity(0.05)))
@@ -59,7 +59,7 @@ struct GoalDetailView: View {
                         .foregroundStyle(.primary)
                     Text(goal.type.rawValue)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
                 .padding(.top, 12)
 
@@ -109,7 +109,7 @@ struct GoalDetailView: View {
                     }
                     Text("You're on track to hit this goal. Keep going!")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
@@ -129,7 +129,7 @@ struct GoalDetailView: View {
     private func detailRow(label: String, value: String) -> some View {
         HStack {
             Text(label)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
             Spacer()
             Text(value)
                 .foregroundStyle(.primary)

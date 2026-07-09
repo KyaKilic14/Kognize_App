@@ -26,7 +26,7 @@ struct ComingSoonView: View {
 
             Text("Coming soon.")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
 
             Spacer()
         }

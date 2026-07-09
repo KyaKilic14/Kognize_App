@@ -228,12 +228,26 @@ data/prompt layer, so building one builds most of the other.
   System/Light/Dark appearance both actually change the live app, persisted via `UserDefaults`
   (app preference, not financial data — doesn't need Keychain). `AppRootView` reads
   `ThemeManager.shared.appearanceMode.colorScheme` and applies `.preferredColorScheme` reactively
-  (via `@Observable` tracking) rather than `KognizeApp` hardcoding `.dark`. Text/card colors
-  across the app use SwiftUI's semantic `.primary`/`.secondary`, which adapt automatically — the
-  only places that stay hardcoded `.white` are button labels sitting on a **solid** purple/red
-  fill (Disclaimer's CTA, Goals' "Add a Goal", the primary Add-Goal-flow button, Spending
-  Context's Save, Menu's Log Out, and the user's own chat bubble in Ask Kog) — those read fine on
-  a saturated fill regardless of theme, translucent/tinted fills do not and must adapt.
+  (via `@Observable` tracking) rather than `KognizeApp` hardcoding `.dark`. Every `.sheet` root
+  (Menu, Add Goal, Journal compose, Add Investment) also declares `.preferredColorScheme` itself —
+  sheets get their own presentation context and don't reliably pick up a live scheme change from
+  an ancestor otherwise, which caused a real reported bug (theme looked stuck until the sheet was
+  closed and reopened).
+- **Text color rule (Kya's call, applies everywhere):** actual text — headings, body copy,
+  captions, section headers — is always `.primary` (white in dark mode, black in light), full
+  opacity, never dimmed and never accent-tinted. `.secondary` is reserved for icon-only glyphs
+  that aren't text (e.g. a disclosure chevron, the passcode delete icon) — it does not apply to
+  words. List section headers need the explicit `Section { ... } header: { Text("X")
+  .foregroundStyle(.primary) }` form, since the plain `Section("X")` string form defaults to a
+  dimmed system gray. The one standing exception: **numbers or symbols that live inside a
+  button/control** are allowed to take a solid accent color instead — the passcode digits and the
+  hamburger icon's three lines both use `Color.kognizeAccentDark` (a solid, ~18% darker version
+  of the current accent, via `Color.darkened(by:)`) sitting on a translucent-accent background,
+  and that pattern extends to any future numeric/symbol control, not just those two.
+- Button labels sitting on a **solid** purple/red fill stay hardcoded `.white` regardless of
+  theme (Disclaimer's CTA, Goals' "Add a Goal", the primary Add-Goal-flow button, Spending
+  Context's Save, Menu's Log Out, the user's own chat bubble in Ask Kog) — reads fine on a
+  saturated fill either way; translucent/tinted fills do not and must stay adaptive.
 - **Sign Out** (in Profile) is real, not a placeholder: it resets the app back to the disclaimer
   screen. No auth backend needed for that to be genuine behavior.
 - **Noted for later, not scheduled yet:** Kya flagged that an account creation / sign-in flow

@@ -97,7 +97,7 @@ struct JournalView: View {
 
             Text("Jot down anything about your finances — Kog can reference it later.")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
@@ -112,7 +112,7 @@ struct JournalView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(entry.date.formatted(date: .abbreviated, time: .shortened))
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                         Text(entry.text)
                             .font(.subheadline)
                             .foregroundStyle(.primary)
@@ -149,7 +149,7 @@ private struct JournalComposeView: View {
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") { dismiss() }
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Save") {

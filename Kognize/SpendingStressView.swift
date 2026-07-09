@@ -38,7 +38,7 @@ struct SpendingStressView: View {
                         .foregroundStyle(.primary)
                     Text("Select anything that applies. Kog uses this as context when you ask questions — it never changes your score directly.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
 
                 VStack(spacing: 10) {

@@ -14,7 +14,7 @@ struct DisclaimerView: View {
 
             Image(systemName: "chart.line.uptrend.xyaxis")
                 .font(.system(size: 44, weight: .medium))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
 
             Text("Kognize")
                 .font(.largeTitle.bold())
@@ -27,7 +27,7 @@ struct DisclaimerView: View {
 
                 Text("Kognize reads your connected accounts to show you a daily financial health score and plain-language insights. It never moves money, never recommends buying or selling, and never has write access to any account.")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }

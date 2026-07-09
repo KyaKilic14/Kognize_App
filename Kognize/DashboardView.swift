@@ -80,7 +80,7 @@ struct DashboardView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(Date(), style: .date)
                 .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
             Text("\(greeting), Kya")
                 .font(.title2.bold())
                 .foregroundStyle(.primary)

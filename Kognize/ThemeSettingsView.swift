@@ -14,7 +14,7 @@ struct ThemeSettingsView: View {
 
     var body: some View {
         List {
-            Section("Accent Color") {
+            Section {
                 ForEach(ThemeManager.accentOptions) { option in
                     Button {
                         theme.accentName = option.name
@@ -33,9 +33,11 @@ struct ThemeSettingsView: View {
                         }
                     }
                 }
+            } header: {
+                Text("Accent Color").foregroundStyle(.primary)
             }
 
-            Section("Appearance") {
+            Section {
                 Picker("Appearance", selection: $theme.appearanceMode) {
                     ForEach(AppearanceMode.allCases) { mode in
                         Text(mode.rawValue).tag(mode)
@@ -43,6 +45,8 @@ struct ThemeSettingsView: View {
                 }
                 .pickerStyle(.segmented)
                 .listRowBackground(Color.clear)
+            } header: {
+                Text("Appearance").foregroundStyle(.primary)
             }
         }
         .scrollContentBackground(.hidden)

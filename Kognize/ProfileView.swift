@@ -17,19 +17,23 @@ struct ProfileView: View {
 
     var body: some View {
         List {
-            Section("Details") {
+            Section {
                 TextField("Name", text: $name)
                 TextField("Email", text: $email)
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
+            } header: {
+                Text("Details").foregroundStyle(.primary)
             }
 
-            Section("Security") {
+            Section {
                 NavigationLink {
                     ComingSoonView(title: "Change Passcode", systemImage: "lock.rotation")
                 } label: {
                     Text("Change Passcode")
                 }
+            } header: {
+                Text("Security").foregroundStyle(.primary)
             }
 
             Section {

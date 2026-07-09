@@ -39,13 +39,13 @@ struct SendFeedbackView: View {
                         .foregroundStyle(.primary)
                     Text("Tell us what's working, what's not, or what you'd like to see.")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Category")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
 
                     HStack(spacing: 10) {
                         ForEach(FeedbackCategory.allCases) { option in
@@ -57,7 +57,7 @@ struct SendFeedbackView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Details")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
 
                     TextField("What's on your mind?", text: $message, axis: .vertical)
                         .lineLimit(6...12)
@@ -82,7 +82,7 @@ struct SendFeedbackView: View {
                 if didSubmit {
                     Text("This doesn't reach a real team yet — the feedback board is a later build step.")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
             }
             .padding(20)

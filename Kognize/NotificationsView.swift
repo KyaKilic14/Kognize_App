@@ -21,24 +21,28 @@ struct NotificationsView: View {
 
     var body: some View {
         List {
-            Section("Daily") {
+            Section {
                 Toggle("Daily Digest", isOn: $isDailyDigestOn)
 
                 if isDailyDigestOn {
                     DatePicker("Digest Time", selection: $digestTime, displayedComponents: .hourAndMinute)
                 }
+            } header: {
+                Text("Daily").foregroundStyle(.primary)
             }
 
-            Section("Alerts") {
+            Section {
                 Toggle("Score Changes", isOn: $isScoreAlertsOn)
                 Toggle("Goal Reminders", isOn: $isGoalRemindersOn)
                 Toggle("Unusual Spending", isOn: $isSpendingAlertsOn)
+            } header: {
+                Text("Alerts").foregroundStyle(.primary)
             }
 
             Section {
                 Text("Notifications never show amounts, balances, or account names — generic text only.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
             }
             .listRowBackground(Color.clear)
         }

@@ -55,7 +55,7 @@ struct AskKogView: View {
 
                 Text("Ask a question about your finances — always educational, never advice.")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
             }

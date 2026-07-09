@@ -61,7 +61,7 @@ struct GoalsView: View {
 
             Text("Set a savings or spending goal and Kog will tell you if you're on track.")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 

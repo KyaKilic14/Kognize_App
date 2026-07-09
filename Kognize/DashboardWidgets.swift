@@ -26,7 +26,7 @@ private func metricRow(icon: String, title: String, value: String, subtitle: Str
                 .foregroundStyle(.primary)
             Text(subtitle)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
         }
 
         Spacer()
@@ -53,7 +53,7 @@ struct ScoreCardWidget: View {
             VStack(spacing: 12) {
                 Text("Today's Score")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
 
                 ZStack {
                     Circle()
@@ -77,7 +77,7 @@ struct ScoreCardWidget: View {
 
                 Text("Spending is on track with your typical month.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
                     .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)
@@ -114,13 +114,13 @@ struct KogSummaryWidget: View {
                         .foregroundStyle(.primary)
                     Text("Spending is up 12% vs. your typical week, mostly dining out.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                     Text("Score improved 4 points since last month.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                     Text("Emergency Fund goal is on track.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
 
                 Spacer()
@@ -227,7 +227,7 @@ struct ScoreHistoryWidget: View {
                         VStack(spacing: 4) {
                             Text(delta.label)
                                 .font(.caption2)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.primary)
                             Text(delta.value >= 0 ? "+\(delta.value)" : "\(delta.value)")
                                 .font(.subheadline.bold())
                                 .foregroundStyle(delta.value >= 0 ? Color.kognizePurple : Color.red.opacity(0.85))
@@ -260,7 +260,7 @@ struct AccountsSummaryWidget: View {
                         .foregroundStyle(.primary)
                     Text("Bank, investments, and manual entries")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
 
                 Spacer()

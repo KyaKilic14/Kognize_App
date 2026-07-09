@@ -11,19 +11,25 @@ import SwiftUI
 struct AccountsDetailView: View {
     var body: some View {
         List {
-            Section("Bank") {
+            Section {
                 Label("Not connected", systemImage: "building.columns")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
+            } header: {
+                Text("Bank").foregroundStyle(.primary)
             }
 
-            Section("Investments") {
+            Section {
                 Label("Trading212 not connected", systemImage: "chart.line.uptrend.xyaxis")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
+            } header: {
+                Text("Investments").foregroundStyle(.primary)
             }
 
-            Section("Manual entries") {
+            Section {
                 Label("No manual entries yet", systemImage: "pencil")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary)
+            } header: {
+                Text("Manual entries").foregroundStyle(.primary)
             }
         }
         .scrollContentBackground(.hidden)

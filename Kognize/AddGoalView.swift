@@ -55,7 +55,7 @@ struct AddGoalView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
             }
         }
@@ -146,7 +146,7 @@ struct AddGoalView: View {
 
             Text("Everything here is optional — skip anything you don't want to fill in yet.")
                 .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
 
             if selectedType == .debtReduction {
                 labeledField(title: "Interest rate (%)", placeholder: "Optional", text: $interestRateText, keyboard: .decimalPad)
@@ -172,7 +172,7 @@ struct AddGoalView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
             TextField(placeholder, text: text)
                 .keyboardType(keyboard)
                 .padding(14)
@@ -188,7 +188,7 @@ struct AddGoalView: View {
                     withAnimation { step = .advanced }
                 }
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary)
             }
 
             Button(action: primaryAction) {

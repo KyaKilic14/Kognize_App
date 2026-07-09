@@ -33,7 +33,7 @@ struct WidgetDetailView: View {
 
                     Text(headlineLabel)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.top, 12)
@@ -57,7 +57,7 @@ struct WidgetDetailView: View {
 
                     Text(kogInsight)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
