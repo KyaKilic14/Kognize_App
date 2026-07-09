@@ -43,13 +43,13 @@ struct PasscodeEntryView: View {
 
             Text("Enter Passcode")
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
 
             HStack(spacing: 16) {
                 ForEach(0..<4, id: \.self) { index in
                     Circle()
                         .fill(dotColor(at: index))
-                        .overlay(Circle().strokeBorder(.white.opacity(0.6), lineWidth: 1.5))
+                        .overlay(Circle().strokeBorder(.primary.opacity(0.3), lineWidth: 1.5))
                         .shadow(color: feedback?.color ?? .clear, radius: 6)
                         .frame(width: 14, height: 14)
                 }
@@ -80,7 +80,7 @@ struct PasscodeEntryView: View {
             } label: {
                 Text("\(digit)")
                     .font(.title.weight(.medium))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                     .frame(width: 72, height: 72)
                     .background(Circle().fill(Color.kognizePurple.opacity(0.12)))
             }
@@ -93,7 +93,7 @@ struct PasscodeEntryView: View {
             } label: {
                 Image(systemName: "delete.left")
                     .font(.title2.weight(.medium))
-                    .foregroundStyle(.white.opacity(0.7))
+                    .foregroundStyle(.secondary)
                     .frame(width: 72, height: 72)
             }
             .disabled(enteredDigits.isEmpty)
@@ -102,7 +102,7 @@ struct PasscodeEntryView: View {
             Button(action: submit) {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.title2.weight(.medium))
-                    .foregroundStyle(enteredDigits.count == 4 ? Color.kognizePurple : Color.white.opacity(0.25))
+                    .foregroundStyle(enteredDigits.count == 4 ? Color.kognizePurple : Color.primary.opacity(0.25))
                     .frame(width: 72, height: 72)
             }
             .disabled(enteredDigits.count != 4)

@@ -2,15 +2,23 @@
 //  Color+Kognize.swift
 //  Kognize
 //
-//  Shared design-system colors. "Themes" (light/dark, custom accents) is a
-//  planned hamburger-menu feature — when it lands, these become the dark
-//  theme's default values rather than the only values.
+//  kognizeBackground adapts to the active color scheme automatically.
+//  kognizePurple is no longer a fixed constant -- it reads live from
+//  ThemeManager, so every existing call site updates the instant the
+//  accent changes, with no per-screen code.
 //
 
 import SwiftUI
+import UIKit
 
 extension Color {
-    static let kognizeBackground = Color(red: 0.05, green: 0.05, blue: 0.05)
-    static let kognizePurple = Color(red: 0.616, green: 0.306, blue: 0.867)
+    static let kognizeBackground = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.05, green: 0.05, blue: 0.05, alpha: 1)
+            : UIColor(red: 0.96, green: 0.96, blue: 0.97, alpha: 1)
+    })
+
+    static var kognizePurple: Color { ThemeManager.shared.accentColor }
+
     static let kognizePurpleDeep = Color(red: 0.353, green: 0.094, blue: 0.604)
 }

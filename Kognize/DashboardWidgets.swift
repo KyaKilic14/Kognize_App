@@ -10,7 +10,7 @@ import SwiftUI
 
 private func widgetCardBackground() -> some View {
     RoundedRectangle(cornerRadius: 20, style: .continuous)
-        .fill(Color.white.opacity(0.05))
+        .fill(Color.primary.opacity(0.05))
 }
 
 private func metricRow(icon: String, title: String, value: String, subtitle: String) -> some View {
@@ -23,17 +23,17 @@ private func metricRow(icon: String, title: String, value: String, subtitle: Str
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
                 .font(.subheadline.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
             Text(subtitle)
                 .font(.caption)
-                .foregroundStyle(.white.opacity(0.55))
+                .foregroundStyle(.secondary)
         }
 
         Spacer()
 
         Text(value)
             .font(.headline)
-            .foregroundStyle(.white)
+            .foregroundStyle(.primary)
     }
     .padding(16)
     .background(widgetCardBackground())
@@ -53,11 +53,11 @@ struct ScoreCardWidget: View {
             VStack(spacing: 12) {
                 Text("Today's Score")
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.secondary)
 
                 ZStack {
                     Circle()
-                        .stroke(Color.white.opacity(0.08), lineWidth: 10)
+                        .stroke(Color.primary.opacity(0.08), lineWidth: 10)
 
                     Circle()
                         .trim(from: 0, to: 0.82)
@@ -67,7 +67,7 @@ struct ScoreCardWidget: View {
                     VStack(spacing: 4) {
                         Text("82")
                             .font(.system(size: 40, weight: .bold))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                         Text("Healthy")
                             .font(.subheadline)
                             .foregroundStyle(Color.kognizePurple)
@@ -77,7 +77,7 @@ struct ScoreCardWidget: View {
 
                 Text("Spending is on track with your typical month.")
                     .font(.footnote)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)
@@ -111,16 +111,16 @@ struct KogSummaryWidget: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Kog says")
                         .font(.subheadline.bold())
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                     Text("Spending is up 12% vs. your typical week, mostly dining out.")
                         .font(.footnote)
-                        .foregroundStyle(.white.opacity(0.65))
+                        .foregroundStyle(.secondary)
                     Text("Score improved 4 points since last month.")
                         .font(.footnote)
-                        .foregroundStyle(.white.opacity(0.65))
+                        .foregroundStyle(.secondary)
                     Text("Emergency Fund goal is on track.")
                         .font(.footnote)
-                        .foregroundStyle(.white.opacity(0.65))
+                        .foregroundStyle(.secondary)
                 }
 
                 Spacer()
@@ -219,14 +219,14 @@ struct ScoreHistoryWidget: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Score Change")
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
 
                 HStack(spacing: 10) {
                     ForEach(deltas, id: \.label) { delta in
                         VStack(spacing: 4) {
                             Text(delta.label)
                                 .font(.caption2)
-                                .foregroundStyle(.white.opacity(0.5))
+                                .foregroundStyle(.secondary)
                             Text(delta.value >= 0 ? "+\(delta.value)" : "\(delta.value)")
                                 .font(.subheadline.bold())
                                 .foregroundStyle(delta.value >= 0 ? Color.kognizePurple : Color.red.opacity(0.85))
@@ -235,7 +235,7 @@ struct ScoreHistoryWidget: View {
                         .padding(.vertical, 10)
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color.white.opacity(0.05))
+                                .fill(Color.primary.opacity(0.05))
                         )
                     }
                 }
@@ -256,16 +256,16 @@ struct AccountsSummaryWidget: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Accounts")
                         .font(.headline)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                     Text("Bank, investments, and manual entries")
                         .font(.footnote)
-                        .foregroundStyle(.white.opacity(0.6))
+                        .foregroundStyle(.secondary)
                 }
 
                 Spacer()
 
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(.white.opacity(0.4))
+                    .foregroundStyle(.secondary)
             }
             .padding(20)
             .background(widgetCardBackground())

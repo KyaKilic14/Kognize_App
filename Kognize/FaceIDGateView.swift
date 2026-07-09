@@ -56,7 +56,7 @@ struct FaceIDGateView: View {
                 .font(.system(size: 20, weight: .medium))
                 .foregroundStyle(faceIDColor)
                 .frame(width: 36, height: 36)
-                .background(Circle().fill(.white.opacity(0.06)))
+                .background(Circle().fill(.primary.opacity(0.06)))
         }
         .disabled(faceIDStatus == .checking || faceIDStatus == .unavailable)
     }
@@ -65,7 +65,7 @@ struct FaceIDGateView: View {
         switch faceIDStatus {
         case .idle, .checking: return .kognizePurple.opacity(0.8)
         case .failed: return .red.opacity(0.8)
-        case .unavailable: return .white.opacity(0.15)
+        case .unavailable: return .primary.opacity(0.15)
         }
     }
 

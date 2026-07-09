@@ -20,11 +20,11 @@ struct GoalRow: View {
                     .foregroundStyle(Color.kognizePurple)
                 Text(goal.name)
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                 Spacer()
                 Text(goal.type.rawValue)
                     .font(.caption)
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(.secondary)
             }
 
             ProgressView(value: progress)
@@ -32,10 +32,10 @@ struct GoalRow: View {
 
             Text("£\(Int(goal.currentAmount)) of £\(Int(goal.targetAmount))")
                 .font(.footnote)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.secondary)
         }
         .padding(18)
-        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.white.opacity(0.05)))
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.primary.opacity(0.05)))
     }
 }
 
@@ -56,10 +56,10 @@ struct GoalDetailView: View {
                         .foregroundStyle(Color.kognizePurple)
                     Text(goal.name)
                         .font(.title2.bold())
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                     Text(goal.type.rawValue)
                         .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.6))
+                        .foregroundStyle(.secondary)
                 }
                 .padding(.top, 12)
 
@@ -68,17 +68,17 @@ struct GoalDetailView: View {
                         .tint(Color.kognizePurple)
                     Text("£\(Int(goal.currentAmount)) of £\(Int(goal.targetAmount))")
                         .font(.headline)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                 }
                 .padding(20)
-                .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.white.opacity(0.05)))
+                .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.primary.opacity(0.05)))
                 .padding(.horizontal, 20)
 
                 if goal.hasAdvancedDetails {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Details")
                             .font(.headline)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
 
                         if let targetDate = goal.targetDate {
                             detailRow(label: "Target date", value: targetDate.formatted(date: .abbreviated, time: .omitted))
@@ -95,7 +95,7 @@ struct GoalDetailView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(20)
-                    .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.white.opacity(0.05)))
+                    .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.primary.opacity(0.05)))
                     .padding(.horizontal, 20)
                 }
 
@@ -105,15 +105,15 @@ struct GoalDetailView: View {
                             .foregroundStyle(Color.kognizePurple)
                         Text("Kog's take")
                             .font(.headline)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                     }
                     Text("You're on track to hit this goal. Keep going!")
                         .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.75))
+                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
-                .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.white.opacity(0.05)))
+                .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.primary.opacity(0.05)))
                 .padding(.horizontal, 20)
 
                 Spacer(minLength: 20)
@@ -124,16 +124,15 @@ struct GoalDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
     }
 
     private func detailRow(label: String, value: String) -> some View {
         HStack {
             Text(label)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.secondary)
             Spacer()
             Text(value)
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
         }
         .font(.subheadline)
     }

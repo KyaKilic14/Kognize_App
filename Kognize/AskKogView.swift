@@ -37,7 +37,6 @@ struct AskKogView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 
@@ -52,11 +51,11 @@ struct AskKogView: View {
 
                 Text("Ask Kog")
                     .font(.title2.bold())
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
 
                 Text("Ask a question about your finances — always educational, never advice.")
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
             }
@@ -98,18 +97,18 @@ struct AskKogView: View {
     private var inputBar: some View {
         HStack(spacing: 12) {
             TextField("Ask Kog anything...", text: $draftMessage)
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color.white.opacity(0.08))
+                        .fill(Color.primary.opacity(0.08))
                 )
 
             Button(action: send) {
                 Image(systemName: "arrow.up.circle.fill")
                     .font(.system(size: 30))
-                    .foregroundStyle(canSend ? Color.kognizePurple : Color.white.opacity(0.2))
+                    .foregroundStyle(canSend ? Color.kognizePurple : Color.primary.opacity(0.2))
             }
             .disabled(!canSend)
         }
@@ -148,12 +147,12 @@ private struct ChatBubble: View {
 
             Text(message.text)
                 .font(.subheadline)
-                .foregroundStyle(.white)
+                .foregroundStyle(message.isFromUser ? .white : .primary)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
                 .background(
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .fill(message.isFromUser ? Color.kognizePurple : Color.white.opacity(0.1))
+                        .fill(message.isFromUser ? Color.kognizePurple : Color.primary.opacity(0.1))
                 )
 
             if !message.isFromUser { Spacer(minLength: 40) }
@@ -169,7 +168,7 @@ private struct TypingBubble: View {
             HStack(spacing: 4) {
                 ForEach(0..<3, id: \.self) { index in
                     Circle()
-                        .fill(Color.white.opacity(0.6))
+                        .fill(Color.primary.opacity(0.6))
                         .frame(width: 6, height: 6)
                         .offset(y: isAnimating ? -4 : 0)
                         .animation(
@@ -180,7 +179,7 @@ private struct TypingBubble: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
-            .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.white.opacity(0.1)))
+            .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.primary.opacity(0.1)))
 
             Spacer(minLength: 40)
         }

@@ -37,6 +37,7 @@ struct AppRootView: View {
                 PrivacyOverlay()
             }
         }
+        .preferredColorScheme(ThemeManager.shared.appearanceMode.colorScheme)
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {
             case .active:

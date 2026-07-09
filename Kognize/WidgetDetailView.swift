@@ -29,11 +29,11 @@ struct WidgetDetailView: View {
 
                     Text(headlineValue)
                         .font(.system(size: 36, weight: .bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
 
                     Text(headlineLabel)
                         .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.6))
+                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.top, 12)
@@ -52,18 +52,18 @@ struct WidgetDetailView: View {
                             .foregroundStyle(Color.kognizePurple)
                         Text("Kog's take")
                             .font(.headline)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                     }
 
                     Text(kogInsight)
                         .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.75))
+                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
                 .background(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(Color.white.opacity(0.05))
+                        .fill(Color.primary.opacity(0.05))
                 )
                 .padding(.horizontal, 20)
 
@@ -75,7 +75,6 @@ struct WidgetDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
         .tint(Color.kognizePurple)
     }
 }

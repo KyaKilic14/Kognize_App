@@ -14,20 +14,20 @@ struct DisclaimerView: View {
 
             Image(systemName: "chart.line.uptrend.xyaxis")
                 .font(.system(size: 44, weight: .medium))
-                .foregroundStyle(.white.opacity(0.9))
+                .foregroundStyle(.secondary)
 
             Text("Kognize")
                 .font(.largeTitle.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
 
             VStack(spacing: 16) {
                 Text("Educational only. Not financial advice.")
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
 
                 Text("Kognize reads your connected accounts to show you a daily financial health score and plain-language insights. It never moves money, never recommends buying or selling, and never has write access to any account.")
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }

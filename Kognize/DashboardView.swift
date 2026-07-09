@@ -73,7 +73,6 @@ struct DashboardView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 
@@ -81,10 +80,10 @@ struct DashboardView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(Date(), style: .date)
                 .font(.footnote)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.secondary)
             Text("\(greeting), Kya")
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
@@ -100,7 +99,7 @@ struct DashboardView: View {
         } label: {
             Text(editMode == .active ? "Done" : "Edit Dashboard")
                 .font(.headline)
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .background(

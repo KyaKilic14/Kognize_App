@@ -46,7 +46,7 @@ struct MainTabView: View {
         } label: {
             Image(systemName: "line.3.horizontal")
                 .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
                 .frame(width: 40, height: 40)
                 .background(Circle().fill(Color.kognizePurple.opacity(0.25)))
                 .overlay(Circle().strokeBorder(Color.kognizePurple.opacity(0.5), lineWidth: 1))

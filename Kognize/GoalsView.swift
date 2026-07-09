@@ -25,9 +25,12 @@ struct GoalsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                // Leading, not trailing -- the floating hamburger menu is
+                // always pinned top-right across every tab, so any
+                // per-screen action button belongs on the left to avoid
+                // sitting underneath it.
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         isAddGoalPresented = true
                     } label: {
@@ -54,11 +57,11 @@ struct GoalsView: View {
 
             Text("No goals yet")
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
 
             Text("Set a savings or spending goal and Kog will tell you if you're on track.")
                 .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 

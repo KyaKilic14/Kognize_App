@@ -22,11 +22,11 @@ struct ComingSoonView: View {
 
             Text(title)
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
 
             Text("Coming soon.")
                 .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.secondary)
 
             Spacer()
         }
@@ -36,7 +36,6 @@ struct ComingSoonView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
     }
 }
 

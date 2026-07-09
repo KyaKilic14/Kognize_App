@@ -16,7 +16,7 @@ struct PrivacyOverlay: View {
 
             Image(systemName: "lock.fill")
                 .font(.system(size: 36, weight: .medium))
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.secondary)
         }
     }
 }

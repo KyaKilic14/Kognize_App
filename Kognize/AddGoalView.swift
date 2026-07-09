@@ -52,11 +52,10 @@ struct AddGoalView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                        .foregroundStyle(.white.opacity(0.7))
+                        .foregroundStyle(.secondary)
                 }
             }
         }
@@ -66,7 +65,7 @@ struct AddGoalView: View {
         HStack(spacing: 6) {
             ForEach([AddGoalStep.type, .basics, .advanced], id: \.self) { s in
                 Capsule()
-                    .fill(s.rawValue <= step.rawValue ? Color.kognizePurple : Color.white.opacity(0.15))
+                    .fill(s.rawValue <= step.rawValue ? Color.kognizePurple : Color.primary.opacity(0.15))
                     .frame(height: 4)
             }
         }
@@ -78,7 +77,7 @@ struct AddGoalView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("What kind of goal is this?")
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
 
             ForEach(GoalType.allCases) { type in
                 Button {
@@ -92,7 +91,7 @@ struct AddGoalView: View {
 
                         Text(type.rawValue)
                             .font(.headline)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
 
                         Spacer()
 
@@ -104,7 +103,7 @@ struct AddGoalView: View {
                     .padding(18)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.white.opacity(selectedType == type ? 0.1 : 0.05))
+                            .fill(Color.primary.opacity(selectedType == type ? 0.1 : 0.05))
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -120,7 +119,7 @@ struct AddGoalView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("The basics")
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
 
             labeledField(
                 title: "Goal name",
@@ -142,11 +141,11 @@ struct AddGoalView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Add more detail")
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
 
             Text("Everything here is optional — skip anything you don't want to fill in yet.")
                 .font(.footnote)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.secondary)
 
             if selectedType == .debtReduction {
                 labeledField(title: "Interest rate (%)", placeholder: "Optional", text: $interestRateText, keyboard: .decimalPad)
@@ -156,13 +155,13 @@ struct AddGoalView: View {
 
                 Toggle("Set a target date", isOn: $hasTargetDate.animation())
                     .tint(Color.kognizePurple)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
 
                 if hasTargetDate {
                     DatePicker("Target date", selection: $targetDate, displayedComponents: .date)
                         .datePickerStyle(.compact)
                         .tint(Color.kognizePurple)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                 }
             }
         }
@@ -172,12 +171,12 @@ struct AddGoalView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.secondary)
             TextField(placeholder, text: text)
                 .keyboardType(keyboard)
                 .padding(14)
-                .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.white.opacity(0.08)))
-                .foregroundStyle(.white)
+                .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.primary.opacity(0.08)))
+                .foregroundStyle(.primary)
         }
     }
 
@@ -188,7 +187,7 @@ struct AddGoalView: View {
                     withAnimation { step = .advanced }
                 }
                 .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.7))
+                .foregroundStyle(.secondary)
             }
 
             Button(action: primaryAction) {

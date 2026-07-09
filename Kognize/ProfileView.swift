@@ -14,8 +14,6 @@ struct ProfileView: View {
 
     @State private var name: String = ""
     @State private var email: String = ""
-    @State private var isDailyDigestOn = true
-    @State private var isScoreAlertsOn = true
 
     var body: some View {
         List {
@@ -34,11 +32,6 @@ struct ProfileView: View {
                 }
             }
 
-            Section("Notifications") {
-                Toggle("Daily Digest", isOn: $isDailyDigestOn)
-                Toggle("Score Alerts", isOn: $isScoreAlertsOn)
-            }
-
             Section {
                 Button(role: .destructive, action: onSignOut) {
                     Text("Sign Out")
@@ -51,7 +44,6 @@ struct ProfileView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
         .tint(Color.kognizePurple)
     }
 }

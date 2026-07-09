@@ -13,17 +13,17 @@ struct AccountsDetailView: View {
         List {
             Section("Bank") {
                 Label("Not connected", systemImage: "building.columns")
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.secondary)
             }
 
             Section("Investments") {
                 Label("Trading212 not connected", systemImage: "chart.line.uptrend.xyaxis")
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.secondary)
             }
 
             Section("Manual entries") {
                 Label("No manual entries yet", systemImage: "pencil")
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.secondary)
             }
         }
         .scrollContentBackground(.hidden)
@@ -32,7 +32,6 @@ struct AccountsDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
         .tint(Color.kognizePurple)
     }
 }
