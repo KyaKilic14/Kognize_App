@@ -197,6 +197,7 @@ struct InvestmentTrackerWidget: View {
             NavigationStack {
                 ComingSoonView(title: "Add Investment", systemImage: "plus.circle")
             }
+            .preferredColorScheme(ThemeManager.shared.appearanceMode.colorScheme)
         }
     }
 }

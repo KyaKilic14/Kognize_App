@@ -59,6 +59,7 @@ struct AddGoalView: View {
                 }
             }
         }
+        .preferredColorScheme(ThemeManager.shared.appearanceMode.colorScheme)
     }
 
     private var progressHeader: some View {

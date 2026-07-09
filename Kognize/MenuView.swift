@@ -54,7 +54,7 @@ struct MenuView: View {
                     }
 
                     NavigationLink {
-                        ComingSoonView(title: "Send Feedback", systemImage: "bubble.left.and.exclamationmark.bubble.right")
+                        SendFeedbackView()
                     } label: {
                         Label("Send Feedback", systemImage: "bubble.left.and.exclamationmark.bubble.right")
                     }
@@ -70,6 +70,13 @@ struct MenuView: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .tint(Color.kognizePurple)
         }
+        // Sheets get their own presentation context, which SwiftUI/UIKit
+        // doesn't always re-evaluate live when .preferredColorScheme
+        // changes on an ancestor -- without this, switching theme mode
+        // from Themes (itself reached from inside this sheet) visibly
+        // lags until the sheet is closed and reopened. Declaring it here
+        // too keeps this sheet's own trait environment in sync instantly.
+        .preferredColorScheme(ThemeManager.shared.appearanceMode.colorScheme)
     }
 
     private var logOutButton: some View {

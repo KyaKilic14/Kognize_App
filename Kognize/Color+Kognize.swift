@@ -3,9 +3,9 @@
 //  Kognize
 //
 //  kognizeBackground adapts to the active color scheme automatically.
-//  kognizePurple is no longer a fixed constant -- it reads live from
-//  ThemeManager, so every existing call site updates the instant the
-//  accent changes, with no per-screen code.
+//  kognizePurple and kognizeAccentDark are no longer fixed constants --
+//  they read live from ThemeManager, so every existing call site updates
+//  the instant the accent changes, with no per-screen code.
 //
 
 import SwiftUI
@@ -20,5 +20,26 @@ extension Color {
 
     static var kognizePurple: Color { ThemeManager.shared.accentColor }
 
-    static let kognizePurpleDeep = Color(red: 0.353, green: 0.094, blue: 0.604)
+    /// A solid, slightly darker version of the current accent -- used
+    /// where an icon needs to read clearly against its own translucent
+    /// accent-tinted background, for any accent color, not just purple.
+    static var kognizeAccentDark: Color { ThemeManager.shared.accentColor.darkened(by: 0.18) }
+
+    func darkened(by amount: Double) -> Color {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        guard UIColor(self).getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else {
+            return self
+        }
+
+        return Color(
+            hue: Double(hue),
+            saturation: Double(saturation),
+            brightness: Double(max(brightness - CGFloat(amount), 0)),
+            opacity: Double(alpha)
+        )
+    }
 }

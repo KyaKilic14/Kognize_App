@@ -161,6 +161,7 @@ private struct JournalComposeView: View {
                     }
                 }
         }
+        .preferredColorScheme(ThemeManager.shared.appearanceMode.colorScheme)
     }
 }
 
