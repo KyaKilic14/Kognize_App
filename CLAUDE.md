@@ -141,7 +141,9 @@ postmortem.
 ```
 iOS App (SwiftUI)
   |-- Face ID gate + disclaimer splash
-  |-- 'Ask Kog' text box (persistent, natural-language entry point)
+  |-- Bottom tab bar: Dashboard / Ask Kog / Goals
+  |-- Floating hamburger menu: Profile, Connected Accounts, App Security,
+  |   Themes, Subscription, Send Feedback
   |
 Thin Backend (orchestration only, minimal persistence)
   |-- Aggregator layer (TrueLayer / Yapily for UK Open Banking; Trading212 API for investments)
@@ -177,7 +179,8 @@ data/prompt layer, so building one builds most of the other.
 - Face ID/passcode gate before any content renders.
 - Connect accounts: one bank (via aggregator), Trading212, manual crypto/cash entry.
 - Daily financial health score — single number/band (Healthy / Watch / Strained) + one-line why.
-- Ask Kog: persistent text box, natural-language Q&A from connected data, always educational.
+- Ask Kog: its own bottom tab (not a text box on Dashboard, per Kya's call), natural-language
+  Q&A from connected data, always educational.
 - 8pm daily digest: income/outgoings, comparison to typical day, one key insight, score movement.
 - Goal tracking: set a goal, Kog reports on-track/behind with plain-language reason.
 - Context input: quick-select/free text ("going on holiday") that adjusts what "normal" looks
@@ -185,6 +188,27 @@ data/prompt layer, so building one builds most of the other.
 - Generic-only push notifications, blurred app-switcher preview.
 - In-app "send feedback" button feeding the admin website's feedback board.
 - Subscription plan is explicitly **last** in build priority.
+
+## App navigation & design
+
+- **Bottom tab bar:** Dashboard, Ask Kog, Goals. Accounts is deliberately *not* a tab — it's a
+  card on Dashboard that drills into `AccountsDetailView`. Dashboard shows only the most
+  necessary data at a glance; every area goes deeper on tap rather than living inline.
+- **Floating hamburger menu** (top right, fixed regardless of tab/scroll): Profile, Connected
+  Accounts management, App Security, Themes, Subscription, Send Feedback. Items without a real
+  screen yet route to `ComingSoonView` rather than dead-ending.
+- **Color system:** `Color+Kognize.swift` — `kognizeBackground` (near-black), `kognizePurple`
+  (the "dark midnight electric purple" accent — buttons, active states, score ring, highlights),
+  `kognizePurpleDeep` (reserved for future gradients). Accent-only on purpose: background stays
+  dark, per Kya's call over a full purple gradient or score-card-only glow.
+- **Dark only for now:** `.preferredColorScheme(.dark)` is forced app-wide in `KognizeApp.swift`.
+  Themes (light/dark/custom) is a planned hamburger item — when built, this hardcoded line goes
+  away in favor of a real setting.
+- **Sign Out** (in Profile) is real, not a placeholder: it resets the app back to the disclaimer
+  screen. No auth backend needed for that to be genuine behavior.
+- **Noted for later, not scheduled yet:** Kya flagged that an account creation / sign-in flow
+  will eventually be needed so data can persist and users can switch devices. Real scope, not
+  in the numbered build order below yet — surface it again when persistence work starts.
 
 ## Build order (feed one step at a time)
 
