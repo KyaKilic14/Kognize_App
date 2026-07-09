@@ -38,17 +38,17 @@ struct DisclaimerView: View {
             Button(action: onAcknowledge) {
                 Text("I Understand")
                     .font(.headline)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
-                    .background(Color.white)
+                    .background(Color.kognizePurple)
                     .clipShape(RoundedRectangle(cornerRadius: 14))
             }
             .padding(.horizontal, 32)
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 0.05, green: 0.05, blue: 0.05).ignoresSafeArea())
+        .background(Color.kognizeBackground.ignoresSafeArea())
     }
 }
 

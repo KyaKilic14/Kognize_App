@@ -38,7 +38,7 @@ struct FaceIDGateView: View {
             PasscodeEntryView(onSuccess: onSuccess, feedback: $passcodeFeedback)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 0.05, green: 0.05, blue: 0.05).ignoresSafeArea())
+        .background(Color.kognizeBackground.ignoresSafeArea())
         .overlay(
             RoundedRectangle(cornerRadius: 55, style: .continuous)
                 .stroke(passcodeFeedback?.color ?? .clear, lineWidth: 6)
@@ -63,7 +63,7 @@ struct FaceIDGateView: View {
 
     private var faceIDColor: Color {
         switch faceIDStatus {
-        case .idle, .checking: return .white.opacity(0.6)
+        case .idle, .checking: return .kognizePurple.opacity(0.8)
         case .failed: return .red.opacity(0.8)
         case .unavailable: return .white.opacity(0.15)
         }

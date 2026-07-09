@@ -28,7 +28,9 @@ struct AppRootView: View {
                     stage = .dashboard
                 }
             case .dashboard:
-                DashboardView()
+                MainTabView {
+                    stage = .disclaimer
+                }
             }
 
             if showPrivacyOverlay {

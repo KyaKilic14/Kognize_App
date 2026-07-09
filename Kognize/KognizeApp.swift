@@ -12,6 +12,7 @@ struct KognizeApp: App {
     var body: some Scene {
         WindowGroup {
             AppRootView()
+                .preferredColorScheme(.dark)
         }
     }
 }

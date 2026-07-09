@@ -67,7 +67,7 @@ struct PasscodeEntryView: View {
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 0.05, green: 0.05, blue: 0.05).ignoresSafeArea())
+        .background(Color.kognizeBackground.ignoresSafeArea())
         .animation(.easeInOut(duration: 0.2), value: feedback != nil)
     }
 
@@ -82,7 +82,7 @@ struct PasscodeEntryView: View {
                     .font(.title.weight(.medium))
                     .foregroundStyle(.white)
                     .frame(width: 72, height: 72)
-                    .background(Circle().fill(.white.opacity(0.08)))
+                    .background(Circle().fill(Color.kognizePurple.opacity(0.12)))
             }
 
         case .delete:
@@ -102,7 +102,7 @@ struct PasscodeEntryView: View {
             Button(action: submit) {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.title2.weight(.medium))
-                    .foregroundStyle(enteredDigits.count == 4 ? .white : .white.opacity(0.25))
+                    .foregroundStyle(enteredDigits.count == 4 ? Color.kognizePurple : Color.white.opacity(0.25))
                     .frame(width: 72, height: 72)
             }
             .disabled(enteredDigits.count != 4)
@@ -113,7 +113,7 @@ struct PasscodeEntryView: View {
         if let feedback {
             return feedback.color
         }
-        return index < enteredDigits.count ? .white : .clear
+        return index < enteredDigits.count ? .kognizePurple : .clear
     }
 
     private func append(_ digit: Int) {
