@@ -9,6 +9,11 @@ Source of truth for the full plan: `kognize-master-plan.pdf` (Kya's Downloads fo
 This file is a working condensation of it — if the two ever disagree, the PDF wins and this
 file should be updated to match.
 
+**Session reports:** `docs/session-reports/` holds one dated report per work session (what got
+built, decisions made, known limitations, suggested next steps) — written by the team at the end
+of a session, at Kya's request. Check the most recent one at the start of a new session for
+context beyond what this file captures; this file stays current-state, the reports are history.
+
 ## Product summary
 
 **Kognize** is a privacy-first iOS app that connects (read-only) to bank accounts,
