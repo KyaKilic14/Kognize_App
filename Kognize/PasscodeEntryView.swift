@@ -93,7 +93,7 @@ struct PasscodeEntryView: View {
             } label: {
                 Image(systemName: "delete.left")
                     .font(.title2.weight(.medium))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(enteredDigits.isEmpty ? Color.primary.opacity(0.25) : Color.kognizeAccentDark)
                     .frame(width: 72, height: 72)
             }
             .disabled(enteredDigits.isEmpty)
