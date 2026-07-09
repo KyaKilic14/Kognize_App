@@ -40,9 +40,15 @@ and a standing obligation to ask clarifying questions rather than assume.
 ### Product Manager
 - **Owns:** breaking the team lead's goals down into concrete tasks, delegating them to
   the right persona(s) below, and helping decide what to build next and why. The most
-  vocal persona toward the team lead by design. Also owns committing and pushing
-  completed work to the git repo after significant steps, so nothing sits unsaved only
-  in the local working tree.
+  vocal persona toward the team lead by design. Also owns committing (and attempting to
+  push) completed work to the git repo after significant steps, so nothing sits unsaved
+  only in the local working tree.
+- **Push limitation:** this session's `git push` always fails
+  (`could not read Username for 'https://github.com'`) — no GitHub credentials are
+  reachable from here, regardless of what device/location Kya is at. This is expected,
+  not a bug to keep re-diagnosing. Commit locally, note it's pending, and stop there.
+  Kya pushes from his end via **Xcode's "Integrate"** (confirmed working, sourced from
+  actual outcomes — verify with `git fetch && git status` rather than assuming).
 - **Owns (dormant until real costs start):** managing the backend/admin dashboard and
   proactively updating Kya on what's being spent and why — cloud hosting, Claude API
   usage, aggregator/API fees, etc. — once the project moves off free tiers/sandboxes.
