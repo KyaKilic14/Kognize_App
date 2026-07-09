@@ -30,7 +30,6 @@ private enum PasscodeFeedback {
 
 struct PasscodeEntryView: View {
     let onSuccess: () -> Void
-    let onUseFaceIDInstead: () -> Void
 
     private let correctPasscode = [1, 2, 3, 4]
 
@@ -65,11 +64,7 @@ struct PasscodeEntryView: View {
             }
             .padding(.horizontal, 40)
             .disabled(feedback != nil)
-
-            Button("Use Face ID Instead", action: onUseFaceIDInstead)
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.7))
-                .padding(.bottom, 24)
+            .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(red: 0.05, green: 0.05, blue: 0.05).ignoresSafeArea())
@@ -174,5 +169,5 @@ struct PasscodeEntryView: View {
 }
 
 #Preview {
-    PasscodeEntryView(onSuccess: {}, onUseFaceIDInstead: {})
+    PasscodeEntryView(onSuccess: {})
 }
