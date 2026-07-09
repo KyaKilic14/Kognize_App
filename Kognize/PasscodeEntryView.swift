@@ -129,12 +129,13 @@ struct PasscodeEntryView: View {
     }
 
     private func submit() {
-        guard enteredDigits.count == 4 else { return }
+        guard enteredDigits.count == 4, feedback == nil else { return }
 
         let isCorrect = enteredDigits == correctPasscode
         feedback = isCorrect ? .correct : .incorrect
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        Task {
+            try? await Task.sleep(for: .milliseconds(500))
             if isCorrect {
                 onSuccess()
             } else {
