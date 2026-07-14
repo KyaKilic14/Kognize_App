@@ -2,19 +2,13 @@
 //  JournalView.swift
 //  Kognize
 //
-//  Bottom-tab destination combining free-text Journal entries and the
-//  Spending Context MCQ (moved here from the hamburger menu per Kya's
-//  call — important enough to live in the tab bar, and naturally part of
-//  the same "context you give Kog" concept). Entries live in memory only
-//  for now — no persistence layer yet.
+//  Pushed from MoreView (not a tab root anymore, so no owned
+//  NavigationStack here — see AccountsDetailView.swift for the same
+//  pattern). Entries live in memory only for now — no persistence layer
+//  yet.
 //
 
 import SwiftUI
-
-private enum JournalSection: String, CaseIterable {
-    case entries = "Entries"
-    case spendingContext = "Spending Context"
-}
 
 private struct JournalEntry: Identifiable {
     let id = UUID()
@@ -23,30 +17,11 @@ private struct JournalEntry: Identifiable {
 }
 
 struct JournalView: View {
-    @State private var section: JournalSection = .entries
     @State private var entries: [JournalEntry] = []
     @State private var isComposePresented = false
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                Picker("Section", selection: $section) {
-                    ForEach(JournalSection.allCases, id: \.self) { section in
-                        Text(section.rawValue).tag(section)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
-                .padding(.bottom, 8)
-
-                switch section {
-                case .entries:
-                    entriesContent
-                case .spendingContext:
-                    SpendingStressView()
-                }
-            }
+        entriesContent
             .background(Color.kognizeBackground.ignoresSafeArea())
             .navigationTitle("Journal")
             .navigationBarTitleDisplayMode(.inline)
@@ -55,23 +30,20 @@ struct JournalView: View {
             .toolbar {
                 // Leading, not trailing -- avoids sitting under the
                 // always-on-top-right floating hamburger menu.
-                if section == .entries {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            isComposePresented = true
-                        } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .foregroundStyle(Color.kognizePurple)
-                        }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        isComposePresented = true
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(Color.kognizePurple)
                     }
                 }
             }
-        }
-        .sheet(isPresented: $isComposePresented) {
-            JournalComposeView { text in
-                entries.insert(JournalEntry(date: Date(), text: text), at: 0)
+            .sheet(isPresented: $isComposePresented) {
+                JournalComposeView { text in
+                    entries.insert(JournalEntry(date: Date(), text: text), at: 0)
+                }
             }
-        }
     }
 
     @ViewBuilder
@@ -166,5 +138,7 @@ private struct JournalComposeView: View {
 }
 
 #Preview {
-    JournalView()
+    NavigationStack {
+        JournalView()
+    }
 }

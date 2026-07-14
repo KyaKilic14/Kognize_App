@@ -3,7 +3,7 @@
 //  Kognize
 //
 //  The post-unlock shell: bottom tab bar (Dashboard, Ask Kog, Goals,
-//  Journal) with a floating hamburger button, fixed in the top-right
+//  More) with a floating hamburger button, fixed in the top-right
 //  regardless of tab or scroll position, opening the menu sheet.
 //
 
@@ -26,8 +26,8 @@ struct MainTabView: View {
                 GoalsView()
                     .tabItem { Label("Goals", systemImage: "target") }
 
-                JournalView()
-                    .tabItem { Label("Journal", systemImage: "book.closed") }
+                MoreView()
+                    .tabItem { Label("More", systemImage: "square.grid.2x2.fill") }
             }
             .tint(Color.kognizePurple)
 

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-private func widgetCardBackground() -> some View {
+func widgetCardBackground() -> some View {
     RoundedRectangle(cornerRadius: 20, style: .continuous)
         .fill(Color.primary.opacity(0.05))
 }

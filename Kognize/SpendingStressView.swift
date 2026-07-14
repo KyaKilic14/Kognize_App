@@ -80,6 +80,10 @@ struct SpendingStressView: View {
             .padding(20)
         }
         .background(Color.kognizeBackground.ignoresSafeArea())
+        .navigationTitle("Spending Context")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 
     private func optionRow(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
