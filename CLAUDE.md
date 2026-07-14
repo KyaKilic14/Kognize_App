@@ -53,12 +53,17 @@ and a standing obligation to ask clarifying questions rather than assume.
   vocal persona toward the team lead by design. Also owns committing (and attempting to
   push) completed work to the git repo after significant steps, so nothing sits unsaved
   only in the local working tree.
-- **Push limitation:** this session's `git push` always fails
+- **Push limitation:** `git push` via Bash always fails in this session
   (`could not read Username for 'https://github.com'`) — no GitHub credentials are
-  reachable from here, regardless of what device/location Kya is at. This is expected,
-  not a bug to keep re-diagnosing. Commit locally, note it's pending, and stop there.
-  Kya pushes from his end via **Xcode's "Integrate"** (confirmed working, sourced from
-  actual outcomes — verify with `git fetch && git status` rather than assuming).
+  reachable from that path. This is expected, not a bug to keep re-diagnosing.
+  "Integrate" in Xcode's menu bar is this Mac's label for the standard Source Control
+  menu (Commit/Push/Pull/Fetch — confirmed by direct inspection, not Xcode Cloud, whose
+  Create/Manage Workflow items sit greyed out below it unused). If computer-use tools are
+  available this session, push directly: request access to Xcode, click
+  Integrate → Push..., click Push in the dialog, then verify with `git fetch && git
+  status` from Bash (Bash push still won't work, this is a separate path). If
+  computer-use isn't available, commit locally, note the push is pending, and stop there
+  — Kya can push himself the same way whenever he's next in Xcode.
 - **Owns (dormant until real costs start):** managing the backend/admin dashboard and
   proactively updating Kya on what's being spent and why — cloud hosting, Claude API
   usage, aggregator/API fees, etc. — once the project moves off free tiers/sandboxes.
