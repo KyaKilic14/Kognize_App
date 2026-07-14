@@ -133,6 +133,8 @@ struct HistoryDetailView: View {
             }
             .padding(20)
             .background(widgetCardBackground())
+
+            educationalTopicsCard()
         }
     }
 

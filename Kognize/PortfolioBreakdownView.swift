@@ -40,8 +40,11 @@ private let considerationsList = [
 // General financial education, deliberately generic -- not tied to "you
 // specifically should do X because of your portfolio." That distinction is
 // what keeps this descriptive rather than a personal recommendation. See
-// CLAUDE.md's App navigation & design section for the reasoning.
-private let educationalTopics: [(icon: String, heading: String, body: String)] = [
+// CLAUDE.md's App navigation & design section for the reasoning. Internal
+// (not private) so HistoryView.swift's read-only detail view can show the
+// same content on a saved breakdown -- it's static/generic, so there's
+// nothing to snapshot per-entry, just re-render the same source.
+let educationalTopics: [(icon: String, heading: String, body: String)] = [
     ("chart.pie", "Diversification across asset classes", "Many investors hold a mix of shares, bonds, cash, and sometimes property or commodities, so a decline in one area doesn't affect the whole portfolio equally. This is a general concept, not a recommendation for any specific portfolio."),
     ("circle.hexagongrid", "Commodities as an asset class", "Gold and other commodities are sometimes used by investors as a way to diversify away from company shares, since they don't always move in the same direction as the stock market. Whether that fits any individual's situation depends on many personal factors."),
     ("banknote", "Tax-advantaged accounts", "In the UK, ISAs and pensions offer different tax treatment for investments. It's generally worth understanding how your own holdings are structured from a tax perspective.")
@@ -343,37 +346,7 @@ struct PortfolioBreakdownView: View {
                 .padding(20)
                 .background(widgetCardBackground())
 
-                VStack(alignment: .leading, spacing: 14) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "book.fill")
-                            .foregroundStyle(Color.kognizePurple)
-                        Text("Things to look into")
-                            .font(.headline)
-                            .foregroundStyle(.primary)
-                    }
-
-                    Text("General financial education, not advice specific to you or this portfolio. For guidance tailored to your situation, consider speaking with a regulated financial adviser.")
-                        .font(.caption)
-                        .foregroundStyle(.primary)
-
-                    ForEach(educationalTopics, id: \.heading) { topic in
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack(spacing: 6) {
-                                Image(systemName: topic.icon)
-                                    .font(.footnote)
-                                    .foregroundStyle(Color.kognizePurple)
-                                Text(topic.heading)
-                                    .font(.subheadline.bold())
-                                    .foregroundStyle(.primary)
-                            }
-                            Text(topic.body)
-                                .font(.footnote)
-                                .foregroundStyle(.primary)
-                        }
-                    }
-                }
-                .padding(20)
-                .background(widgetCardBackground())
+                educationalTopicsCard()
 
                 Button {
                     withAnimation {
@@ -427,6 +400,40 @@ func bulletRow(_ text: String) -> some View {
             .font(.subheadline)
             .foregroundStyle(.primary)
     }
+}
+
+func educationalTopicsCard() -> some View {
+    VStack(alignment: .leading, spacing: 14) {
+        HStack(spacing: 8) {
+            Image(systemName: "book.fill")
+                .foregroundStyle(Color.kognizePurple)
+            Text("Things to look into")
+                .font(.headline)
+                .foregroundStyle(.primary)
+        }
+
+        Text("General financial education, not advice specific to you or this portfolio. For guidance tailored to your situation, consider speaking with a regulated financial adviser.")
+            .font(.caption)
+            .foregroundStyle(.primary)
+
+        ForEach(educationalTopics, id: \.heading) { topic in
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 6) {
+                    Image(systemName: topic.icon)
+                        .font(.footnote)
+                        .foregroundStyle(Color.kognizePurple)
+                    Text(topic.heading)
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.primary)
+                }
+                Text(topic.body)
+                    .font(.footnote)
+                    .foregroundStyle(.primary)
+            }
+        }
+    }
+    .padding(20)
+    .background(widgetCardBackground())
 }
 
 #Preview {
