@@ -236,9 +236,25 @@ data/prompt layer, so building one builds most of the other.
   advisory: no "rating," no "suggested changes" — those read as advice, which the app's
   non-negotiable principles explicitly rule out. Use diversification/concentration language and
   "things to consider," not recommendations, for any future copy here or in similar features.
-- **Floating hamburger menu** (top right, fixed regardless of tab/scroll): Profile, Connected
-  Accounts management, App Security, Notifications, Themes, Subscription, Send Feedback. Items
-  without a real screen yet route to `ComingSoonView` rather than dead-ending.
+  Its "Things to look into" section is **generic financial education only** (what
+  diversification/commodities/ISAs are, as concepts) — deliberately not personalized to the
+  user's stated goals or specific holdings. Kya originally asked for the personalized version
+  ("potentially look into buying gold to match your goals"); the team flagged that hedged wording
+  doesn't change that a personalized, goal-tied investment suggestion is a regulated personal
+  recommendation under UK rules regardless of phrasing — Kya agreed to the generic-education
+  version instead. **Do not personalize this section to a specific portfolio/goals** without
+  raising that same flag again first.
+- **History (`HistoryView.swift` / `HistoryStore.swift`)** — a hamburger-menu item, not a More
+  card, since it's a read-only record of what's already happened rather than a feature to use.
+  `HistoryStore.shared` is an `@Observable` singleton (same pattern as `ThemeManager`) holding
+  `[HistoryEntry]`; `HistoryEntryContent` is an enum so new features can save into the same store
+  without changing `HistoryView` itself. Currently fed by: Portfolio Breakdown (auto-saves on
+  reaching Results) and Ask Kog (explicit "save conversation" toolbar button, which also clears
+  the chat to start fresh — Ask Kog has no natural session boundary otherwise). In-memory only,
+  same as everything it saves — lost on relaunch until a real persistence layer exists.
+- **Floating hamburger menu** (top right, fixed regardless of tab/scroll): Profile, History,
+  Connected Accounts management, App Security, Notifications, Themes, Subscription, Send
+  Feedback. Items without a real screen yet route to `ComingSoonView` rather than dead-ending.
 - **Toolbar buttons go leading (top-left), never trailing.** The hamburger button is always
   pinned top-right across every tab and every pushed screen within a tab's `NavigationStack` (it
   doesn't get covered by navigation pushes, only by modal sheets). Any screen-level action button
