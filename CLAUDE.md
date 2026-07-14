@@ -5,6 +5,11 @@ context in every session, not just referenced once. It defines the virtual team,
 work together, and a condensed version of the master plan so the plan doesn't need to be
 re-read from the PDF each time.
 
+**Run `ON_STARTUP.md` at the start of every new session, before any requested work** — a quick
+repo/git health check (status, history, remote, push-vs-fetch reality, file visibility) plus
+reading this file and the latest session report for context. Report back in one line if it's all
+clean; only expand if something's actually wrong.
+
 Source of truth for the full plan: `kognize-master-plan.pdf` (Kya's Downloads folder).
 This file is a working condensation of it — if the two ever disagree, the PDF wins and this
 file should be updated to match.
