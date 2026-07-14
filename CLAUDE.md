@@ -168,8 +168,8 @@ postmortem.
 ```
 iOS App (SwiftUI)
   |-- Face ID gate + disclaimer splash
-  |-- Bottom tab bar: Dashboard / Ask Kog / Goals / Journal (Journal
-  |   includes Spending Context as an in-screen section)
+  |-- Bottom tab bar: Dashboard / Ask Kog / Goals / More (More is a hub
+  |   of feature cards: Journal, Spending Context, Portfolio Breakdown)
   |-- Floating hamburger menu: Profile, Connected Accounts, App Security,
   |   Notifications, Themes, Subscription, Send Feedback
   |
@@ -219,12 +219,23 @@ data/prompt layer, so building one builds most of the other.
 
 ## App navigation & design
 
-- **Bottom tab bar:** Dashboard, Ask Kog, Goals, Journal. Accounts is deliberately *not* a tab —
+- **Bottom tab bar:** Dashboard, Ask Kog, Goals, More. Accounts is deliberately *not* a tab —
   it's a card on Dashboard that drills into `AccountsDetailView`. Dashboard shows only the most
-  necessary data at a glance; every area goes deeper on tap rather than living inline. Journal
-  contains Spending Context as an in-screen segmented section (moved out of the hamburger menu —
-  important enough to live in the tab bar, and conceptually part of the same "context for Kog"
-  feature).
+  necessary data at a glance; every area goes deeper on tap rather than living inline.
+- **More (`MoreView.swift`)** is the designated home for lower-frequency features, separate from
+  the hamburger menu (which is account/app *settings* — More is product *features*). Replaced the
+  old Journal tab slot once the tab bar started running out of room; picked over renaming Ask Kog
+  to something broader, since a hub directly solves "where do new features go" and a rename
+  doesn't. Cards: Journal (un-nested back to just entries — Spending Context used to live inside
+  it via a segmented control, now promoted to its own card), Spending Context, Portfolio
+  Breakdown. New features generally get a card here rather than a new tab or a menu item — ask
+  the team lead only if something seems tab-bar-worthy on its own merits.
+- **Portfolio Breakdown (`PortfolioBreakdownView.swift`)** — upload a portfolio screenshot, a
+  canned Q&A (reuses `ChatBubbleViews.swift`, shared with Ask Kog), then a results screen. UI
+  shell only, same as Ask Kog — no real image analysis. Copy is deliberately descriptive, never
+  advisory: no "rating," no "suggested changes" — those read as advice, which the app's
+  non-negotiable principles explicitly rule out. Use diversification/concentration language and
+  "things to consider," not recommendations, for any future copy here or in similar features.
 - **Floating hamburger menu** (top right, fixed regardless of tab/scroll): Profile, Connected
   Accounts management, App Security, Notifications, Themes, Subscription, Send Feedback. Items
   without a real screen yet route to `ComingSoonView` rather than dead-ending.
