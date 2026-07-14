@@ -27,6 +27,26 @@ private let cannedQuestions = [
     "Is any of this held in a tax-advantaged account, like an ISA or pension?"
 ]
 
+// Single source of truth for the results content, so the live screen and
+// the saved History entry never drift apart.
+private let diversificationObservation = "Your holdings appear spread across 4 sectors, with the largest concentration in Technology at roughly 38% of the value shown. No single position looks to dominate the portfolio."
+private let dividendEstimateText = "Around £142 per year, estimated from the holdings identified in this upload. This figure is illustrative only."
+private let considerationsList = [
+    "A large share of this portfolio sits in a single sector, which can make performance more sensitive to news in that sector.",
+    "Roughly a third of the value shown isn't currently generating dividend income, based on what's visible in the upload.",
+    "Some holdings appear across more than one account type, which is worth being aware of when reviewing total exposure."
+]
+
+// General financial education, deliberately generic -- not tied to "you
+// specifically should do X because of your portfolio." That distinction is
+// what keeps this descriptive rather than a personal recommendation. See
+// CLAUDE.md's App navigation & design section for the reasoning.
+private let educationalTopics: [(icon: String, heading: String, body: String)] = [
+    ("chart.pie", "Diversification across asset classes", "Many investors hold a mix of shares, bonds, cash, and sometimes property or commodities, so a decline in one area doesn't affect the whole portfolio equally. This is a general concept, not a recommendation for any specific portfolio."),
+    ("circle.hexagongrid", "Commodities as an asset class", "Gold and other commodities are sometimes used by investors as a way to diversify away from company shares, since they don't always move in the same direction as the stock market. Whether that fits any individual's situation depends on many personal factors."),
+    ("banknote", "Tax-advantaged accounts", "In the UK, ISAs and pensions offer different tax treatment for investments. It's generally worth understanding how your own holdings are structured from a tax perspective.")
+]
+
 struct PortfolioBreakdownView: View {
     @State private var step: PortfolioStep = .upload
 
@@ -176,6 +196,7 @@ struct PortfolioBreakdownView: View {
 
             if conversationComplete {
                 Button {
+                    saveToHistory()
                     withAnimation { step = .results }
                 } label: {
                     Text("See Your Breakdown")
@@ -215,6 +236,19 @@ struct PortfolioBreakdownView: View {
 
     private var canSend: Bool {
         !draftMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isKogTyping
+    }
+
+    private func saveToHistory() {
+        let entry = HistoryEntry(
+            date: Date(),
+            title: "Portfolio Breakdown",
+            content: .portfolioBreakdown(
+                diversification: diversificationObservation,
+                dividendEstimate: dividendEstimateText,
+                considerations: considerationsList
+            )
+        )
+        HistoryStore.shared.save(entry)
     }
 
     private func seedConversation() {
@@ -284,13 +318,13 @@ struct PortfolioBreakdownView: View {
                 resultCard(
                     icon: "chart.pie.fill",
                     heading: "Diversification & Concentration",
-                    body: "Your holdings appear spread across 4 sectors, with the largest concentration in Technology at roughly 38% of the value shown. No single position looks to dominate the portfolio."
+                    body: diversificationObservation
                 )
 
                 resultCard(
                     icon: "banknote.fill",
                     heading: "Estimated Dividend Income",
-                    body: "Around £142 per year, estimated from the holdings identified in this upload. This figure is illustrative only."
+                    body: dividendEstimateText
                 )
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -302,9 +336,41 @@ struct PortfolioBreakdownView: View {
                             .foregroundStyle(.primary)
                     }
 
-                    bulletRow("A large share of this portfolio sits in a single sector, which can make performance more sensitive to news in that sector.")
-                    bulletRow("Roughly a third of the value shown isn't currently generating dividend income, based on what's visible in the upload.")
-                    bulletRow("Some holdings appear across more than one account type, which is worth being aware of when reviewing total exposure.")
+                    ForEach(considerationsList, id: \.self) { item in
+                        bulletRow(item)
+                    }
+                }
+                .padding(20)
+                .background(widgetCardBackground())
+
+                VStack(alignment: .leading, spacing: 14) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "book.fill")
+                            .foregroundStyle(Color.kognizePurple)
+                        Text("Things to look into")
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                    }
+
+                    Text("General financial education, not advice specific to you or this portfolio. For guidance tailored to your situation, consider speaking with a regulated financial adviser.")
+                        .font(.caption)
+                        .foregroundStyle(.primary)
+
+                    ForEach(educationalTopics, id: \.heading) { topic in
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack(spacing: 6) {
+                                Image(systemName: topic.icon)
+                                    .font(.footnote)
+                                    .foregroundStyle(Color.kognizePurple)
+                                Text(topic.heading)
+                                    .font(.subheadline.bold())
+                                    .foregroundStyle(.primary)
+                            }
+                            Text(topic.body)
+                                .font(.footnote)
+                                .foregroundStyle(.primary)
+                        }
+                    }
                 }
                 .padding(20)
                 .background(widgetCardBackground())
@@ -328,35 +394,38 @@ struct PortfolioBreakdownView: View {
         }
     }
 
-    private func resultCard(icon: String, heading: String, body: String) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 8) {
-                Image(systemName: icon)
-                    .foregroundStyle(Color.kognizePurple)
-                Text(heading)
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-            }
+}
 
-            Text(body)
-                .font(.subheadline)
+// Shared with HistoryView.swift's read-only detail rendering, so a saved
+// breakdown looks identical to the live one.
+func resultCard(icon: String, heading: String, body: String) -> some View {
+    VStack(alignment: .leading, spacing: 10) {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .foregroundStyle(Color.kognizePurple)
+            Text(heading)
+                .font(.headline)
                 .foregroundStyle(.primary)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(widgetCardBackground())
+
+        Text(body)
+            .font(.subheadline)
+            .foregroundStyle(.primary)
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(20)
+    .background(widgetCardBackground())
+}
 
-    private func bulletRow(_ text: String) -> some View {
-        HStack(alignment: .top, spacing: 8) {
-            Circle()
-                .fill(Color.kognizePurple)
-                .frame(width: 5, height: 5)
-                .padding(.top, 7)
-            Text(text)
-                .font(.subheadline)
-                .foregroundStyle(.primary)
-        }
+func bulletRow(_ text: String) -> some View {
+    HStack(alignment: .top, spacing: 8) {
+        Circle()
+            .fill(Color.kognizePurple)
+            .frame(width: 5, height: 5)
+            .padding(.top, 7)
+        Text(text)
+            .font(.subheadline)
+            .foregroundStyle(.primary)
     }
 }
 

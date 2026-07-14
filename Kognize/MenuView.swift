@@ -24,6 +24,12 @@ struct MenuView: View {
                     }
 
                     NavigationLink {
+                        HistoryView()
+                    } label: {
+                        Label("History", systemImage: "clock.arrow.circlepath")
+                    }
+
+                    NavigationLink {
                         ComingSoonView(title: "Connected Accounts", systemImage: "link")
                     } label: {
                         Label("Connected Accounts", systemImage: "link")

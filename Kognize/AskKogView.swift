@@ -31,6 +31,17 @@ struct AskKogView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                // Leading, not trailing -- avoids sitting under the
+                // always-on-top-right floating hamburger menu.
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: saveConversationToHistory) {
+                        Image(systemName: "archivebox.fill")
+                            .foregroundStyle(messages.isEmpty ? Color.primary.opacity(0.25) : Color.kognizePurple)
+                    }
+                    .disabled(messages.isEmpty)
+                }
+            }
         }
     }
 
@@ -111,6 +122,18 @@ struct AskKogView: View {
 
     private var canSend: Bool {
         !draftMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isKogTyping
+    }
+
+    private func saveConversationToHistory() {
+        guard !messages.isEmpty else { return }
+
+        let entry = HistoryEntry(
+            date: Date(),
+            title: "Chat — \(Date().formatted(date: .abbreviated, time: .shortened))",
+            content: .askKogConversation(messages: messages)
+        )
+        HistoryStore.shared.save(entry)
+        messages = []
     }
 
     private func send() {
