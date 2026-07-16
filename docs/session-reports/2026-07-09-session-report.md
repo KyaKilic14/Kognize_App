@@ -178,3 +178,111 @@ connecting anything real."
 2. Or: start Build Order Step 2 (backend scaffold) so the aggregator/Kog work can begin in parallel
    with more frontend polish.
 3. Visual QA pass in Xcode — light mode, all 5 accent colors, on a real simulator.
+
+---
+
+## 7. Session continued (same day, later) — HEAD now `f5f8c0f`
+
+Everything below happened after section 1–6 above were written. `git log`/`docs/session-reports/`
+is the durable source of truth if anything here is ever unclear — this is a summary, not a
+replacement for reading the actual commits/CLAUDE.md.
+
+### 7.1 Environment fixes
+- **Project moved out of iCloud Drive** to `~/PROJECTS/Kognize` (was
+  `~/Library/Mobile Documents/com~apple~CloudDocs/Kognize`) — Xcode + iCloud Drive was causing slow
+  saves/quits (many small `.git` object files + a constantly-rewritten `.xcuserstate` fighting
+  iCloud's file coordination). Git history/remote came across intact. **All paths below are relative
+  to the new location.**
+- **`ON_STARTUP.md`** added at the repo root — a git/file-visibility health check every new session
+  should run first, referenced from `CLAUDE.md` (the only file Claude Code auto-loads). Running it
+  caught a real issue once: local `main` and `origin/main` had diverged (same logical commit, two
+  hashes) because Kya's Xcode Integrate does amend-style commits — diagnosed as a safe merge (one
+  side was a strict superset) and resolved.
+- **Confirmed via `computer-use` tools** (screen control, granted access to Xcode) what "Integrate"
+  actually is: this Mac's menu-bar label for the standard Source Control menu (Commit/Push/Pull/
+  Fetch) — not Xcode Cloud, whose Create/Manage Workflow items sit greyed out unused beneath it. Also
+  confirmed push is achievable from a Claude Code session **when computer-use is available** — not
+  purely something Kya has to do himself — by clicking through Integrate → Push... → Push and
+  verifying `origin/main` moved.
+- Removed a duplicate session-report PDF that ended up tracked at the repo root; kept the one in
+  `docs/session-reports/`. Added `Resources for Kya/` as Kya's own separate, intentional copy
+  location (not a duplicate to clean up).
+
+### 7.2 Design polish
+- Passcode keypad digits and the delete/back button now use `Color.kognizeAccentDark` (solid,
+  ~18% darker than the current accent) instead of plain `.primary` — matches the hamburger icon's
+  treatment, reflects whichever of the 5 accent presets is selected.
+
+### 7.3 New "More" hub + un-nesting (replaces the Journal tab)
+- Kya's call, over renaming Ask Kog to something broader: a dedicated **More** tab (4th slot,
+  `square.grid.2x2.fill`) — a scalable, designated home for new features, since the tab bar was
+  running out of room and Ask Kog renaming wouldn't have created any new space.
+- `MoreView.swift` — a card-list hub (reuses `widgetCardBackground()`), not a settings `List` like
+  `MenuView`. Cards today: **Journal**, **Spending Context**, **Portfolio Breakdown**, **Receipt
+  Scanner**.
+- **Journal un-nested** back to just entries (dropped its segmented control and owned
+  `NavigationStack`, since it's now a pushed destination from `MoreView`, not a tab root).
+  **Spending Context** promoted to its own card/screen (was nested inside Journal).
+
+### 7.4 Portfolio Breakdown (`PortfolioBreakdownView.swift`) — new feature, UI shell
+- Upload a portfolio screenshot (`PhotosPicker`) → canned Q&A (extracted `ChatMessage`/`ChatBubble`/
+  `TypingBubble` into shared `ChatBubbleViews.swift`, reused by Ask Kog too) → results screen
+  (diversification/concentration observation, estimated dividend income, "Things to consider").
+- **Real compliance call, not just a style choice:** Kya originally wanted a "rating" + "suggested
+  changes" ("potentially look into buying gold to match your goals"). The team pushed back — hedged
+  wording doesn't change that a personalized, goal-tied investment suggestion is a regulated personal
+  recommendation under UK rules, regardless of phrasing. Kya agreed to a generic-education
+  alternative instead: a separate **"Things to look into"** section with purely generic financial
+  education (what diversification/commodities/ISAs are, as concepts) — deliberately never
+  personalized to the specific portfolio or goals. **Do not personalize this section** without
+  raising that same flag again.
+
+### 7.5 History (`HistoryView.swift` / `HistoryStore.swift`) — new hamburger-menu item
+- Read-only record of past feature results — lives in the hamburger menu (not More, since it's a
+  record of what already happened, not a feature to go use).
+- `HistoryStore.shared` is an `@Observable` singleton holding `[HistoryEntry]`; `HistoryEntryContent`
+  is an enum (`.portfolioBreakdown`, `.askKogConversation`, `.receiptScanner`) so new features can
+  save into the same store without changing `HistoryView` itself.
+- Fed by: Portfolio Breakdown (auto-saves on reaching Results), Receipt Scanner (auto-saves on
+  completing/skipping the Q&A), Ask Kog (explicit "save conversation" button, which also clears the
+  chat to start fresh, since Ask Kog otherwise has no natural session boundary).
+- In-memory only, same as everything it saves — lost on relaunch until real persistence exists.
+
+### 7.6 Receipt Scanner (`ReceiptScannerView.swift`) — new feature, UI shell
+- 4-step flow: **Capture** (camera via new `CameraCaptureView.swift`, wrapping
+  `UIImagePickerController` since `PhotosPicker` can't open the camera — needed a new
+  `NSCameraUsageDescription` Info.plist key in `project.pbxproj` — or upload) → **Breakdown**
+  (editable form: merchant/date/amount/category, pre-filled with canned "extracted" values the user
+  can correct — first *editable* results pattern in the app, vs. Portfolio Breakdown's read-only
+  results) → **Questions** (canned Q&A, context-aware in a small deliberate way: asks
+  business-vs-personal specifically when the merchant name contains "Apple"; one "Skip for now"
+  skips the whole step at once, per Kya's call) → **Confirmation**.
+- **Introduces `FinanceStore.swift`** — a shared `@Observable` store behind Dashboard's Score/
+  Spending/Income widgets, which were previously just hardcoded literals with nothing feeding them.
+  Saving a receipt calls `FinanceStore.shared.recordReceipt(amount:)`, which those widgets now read
+  live (illustrative placeholder math only — spend adds to the total, score nudges down slightly,
+  not a real scoring algorithm). **First feature whose result is actually visible elsewhere in the
+  app**, not just on its own screen.
+
+### 7.7 Kog memory architecture — documentation only, no backend exists yet
+- Kya asked how "the AI's memory" should be stored, assuming markdown files split by month, loading
+  only the last 3 months by default. Team's answer: markdown is the right tool for *this dev team's*
+  project memory (`CLAUDE.md`, session reports) — not for Kog's *production* memory, which is a
+  different, per-user, needs-real-querying problem that the master plan already assigns to
+  **Postgres** (a `kog_messages` table is already named in the build order).
+- The good instinct — default to recent data, fetch older data only when needed — is real and
+  sound; it's just implemented as a date-filtered SQL query against an indexed column, not
+  hand-split monthly files.
+- **Confirmed with Kya, a deliberate departure from the plan's original "pass through, don't
+  warehouse" default:** Kog's memory will include raw transaction-level detail, not just Kog's own
+  derived summaries. Safeguard added: a **24-month retention ceiling** on raw transaction detail
+  (PM's recommendation, not yet explicitly locked in by Kya) — after which it collapses to
+  aggregate/derived form only. Documented in `CLAUDE.md`'s Architecture section as "Kog memory
+  tiering," cross-referenced from Backend Dev's existing retention bullet.
+
+### 7.8 Repo state as of this addendum
+- HEAD: `f5f8c0f`, all committed, working tree clean.
+- Push status: same as always — attempted via Bash (fails, no credentials reachable from that path)
+  and/or via computer-use (works, when that tool is available this session). Check `git status`
+  against `origin/main` to know current truth rather than assuming.
+- 34 Swift files now in `Kognize/` (was ~13 at the point of the original section 1–6 report).
