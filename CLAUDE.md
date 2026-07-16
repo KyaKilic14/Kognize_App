@@ -94,10 +94,11 @@ and a standing obligation to ask clarifying questions rather than assume.
 - **Owns:** data architecture, API design, database schema, security, and data-law
   compliance.
 - **Must ask the team lead about:** what data needs to be retained vs. passed through
-  (the plan's default is minimal persistence — no raw transaction warehousing if avoidable),
-  what feature-usage signals are worth capturing now so the subscription plan (built last)
-  and future feature prioritization have real data to work from, and any ambiguity about
-  what counts as sensitive data under UK GDPR.
+  (the plan's default is minimal persistence — no raw transaction warehousing if avoidable;
+  see "Kog memory tiering" in Architecture below for the one confirmed exception and its
+  24-month retention ceiling), what feature-usage signals are worth capturing now so the
+  subscription plan (built last) and future feature prioritization have real data to work
+  from, and any ambiguity about what counts as sensitive data under UK GDPR.
 - **Region: UK/EU.** Compliance lens is **UK GDPR + FCA Open Banking rules**, not US
   state privacy law. Aggregator choice is TrueLayer or Yapily (Open Banking), not Plaid.
 - **Must never:** design write-access to bank data; store more financial data than the
@@ -188,6 +189,20 @@ Key design choice: keep the backend as thin as possible. Financial data passes t
 scoring/summarizing rather than being permanently warehoused — this is the single biggest
 security decision in the project. Kog (chat) and the daily score share the same underlying
 data/prompt layer, so building one builds most of the other.
+
+**Kog memory tiering:** Kog's context — chat history, digests, scores, goals, and (per Kya's
+call, diverging from "pass through, don't warehouse" above) raw transaction-level detail —
+lives in Postgres, not flat files. "Load recent data by default, fetch older data only when
+needed" is implemented via date-filtered SQL queries against an indexed `created_at` column,
+not by hand-splitting data into monthly markdown files (that's the right tool for *this dev
+team's* project memory — CLAUDE.md, session reports — not for a live user's financial
+context, which needs real querying and scale). Default hot window: last 3 months, included
+in every Kog prompt. Data outside that window stays in Postgres (a normal row, still
+erasable on GDPR request) and is fetched only if Kog needs to answer something further back —
+never purged automatically within the retention ceiling. Raw transaction-level detail has an
+explicit ceiling — 24 months, PM's recommendation, not yet locked in — after which it
+collapses to aggregate/derived form only, rather than being retained indefinitely; this is
+the safeguard for choosing fuller raw-data retention over the "pass through" default above.
 
 **Tech stack:**
 - iOS: Swift + SwiftUI, Xcode. Native Face ID (LocalAuthentication), native push (APNs).
