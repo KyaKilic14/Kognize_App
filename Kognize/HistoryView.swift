@@ -108,6 +108,8 @@ struct HistoryDetailView: View {
                     conversationContent(messages: messages)
                 case .receiptScanner(let merchant, let date, let amount, let category, let messages):
                     receiptContent(merchant: merchant, date: date, amount: amount, category: category, messages: messages)
+                case .subscriptionCentre(let name, let cost, let frequency, let messages):
+                    subscriptionContent(name: name, cost: cost, frequency: frequency, messages: messages)
                 }
             }
             .padding(20)
@@ -154,6 +156,28 @@ struct HistoryDetailView: View {
             resultCard(icon: "calendar", heading: "Date", body: date.formatted(date: .long, time: .omitted))
             resultCard(icon: "banknote.fill", heading: "Amount", body: formattedGBP(amount))
             resultCard(icon: "tag.fill", heading: "Category", body: category)
+
+            if !messages.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "sparkles").foregroundStyle(Color.kognizePurple)
+                        Text("Conversation").font(.headline).foregroundStyle(.primary)
+                    }
+                    ForEach(messages) { message in
+                        ChatBubble(message: message)
+                    }
+                }
+                .padding(20)
+                .background(widgetCardBackground())
+            }
+        }
+    }
+
+    private func subscriptionContent(name: String, cost: Double, frequency: String, messages: [ChatMessage]) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            resultCard(icon: "tag.fill", heading: "Subscription", body: name)
+            resultCard(icon: "banknote.fill", heading: "Cost", body: "\(formattedGBP(cost)) / \(frequency.lowercased())")
+            resultCard(icon: "calendar", heading: "Billing Frequency", body: frequency)
 
             if !messages.isEmpty {
                 VStack(alignment: .leading, spacing: 10) {

@@ -142,12 +142,18 @@ struct SpendingTrackerWidget: View {
                 systemImage: "arrow.down.circle.fill",
                 headlineValue: formattedGBP(FinanceStore.shared.spendingTotal),
                 headlineLabel: "This month",
-                kogInsight: "Spending is 12% above your typical month, mostly in dining and transport."
+                kogInsight: "Spending is 12% above your typical month, mostly in dining and transport. \(subscriptionsInsightFragment)"
             )
         } label: {
             metricRow(icon: "arrow.down.circle.fill", title: "Spending", value: formattedGBP(FinanceStore.shared.spendingTotal), subtitle: "This month · +12% vs. usual")
         }
         .buttonStyle(.plain)
+    }
+
+    private var subscriptionsInsightFragment: String {
+        let count = SubscriptionStore.shared.subscriptions.count
+        guard count > 0 else { return "" }
+        return "This includes \(formattedGBP(SubscriptionStore.shared.estimatedMonthlyCost)) across \(count) tracked subscription\(count == 1 ? "" : "s")."
     }
 }
 

@@ -15,6 +15,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
     case spendingContext
     case portfolioBreakdown
     case receiptScanner
+    case subscriptionCentre
 
     var id: String { rawValue }
 
@@ -24,6 +25,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .spendingContext: return "Spending Context"
         case .portfolioBreakdown: return "Portfolio Breakdown"
         case .receiptScanner: return "Receipt Scanner"
+        case .subscriptionCentre: return "Subscription Centre"
         }
     }
 
@@ -33,6 +35,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .spendingContext: return "What's been affecting your spending lately"
         case .portfolioBreakdown: return "Upload a portfolio screenshot for a preview breakdown"
         case .receiptScanner: return "Scan or upload a receipt to log a purchase"
+        case .subscriptionCentre: return "Track your recurring subscriptions and their cost"
         }
     }
 
@@ -42,31 +45,50 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .spendingContext: return "bolt.heart.fill"
         case .portfolioBreakdown: return "chart.pie.fill"
         case .receiptScanner: return "doc.text.viewfinder"
+        case .subscriptionCentre: return "arrow.triangle.2.circlepath"
         }
     }
 }
 
 struct MoreView: View {
+    @State private var featureOrder: [MoreFeatureKind] = MoreFeatureKind.allCases
+    @State private var editMode: EditMode = .inactive
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 14) {
-                    ForEach(MoreFeatureKind.allCases) { kind in
-                        NavigationLink {
-                            destination(for: kind)
-                        } label: {
-                            card(for: kind)
-                        }
-                        .buttonStyle(.plain)
+            List {
+                ForEach(featureOrder) { kind in
+                    NavigationLink {
+                        destination(for: kind)
+                    } label: {
+                        card(for: kind)
                     }
+                    .buttonStyle(.plain)
                 }
-                .padding(20)
+                .onMove { indices, newOffset in
+                    featureOrder.move(fromOffsets: indices, toOffset: newOffset)
+                }
+                .listRowInsets(EdgeInsets(top: 7, leading: 20, bottom: 7, trailing: 20))
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .environment(\.editMode, $editMode)
             .background(Color.kognizeBackground.ignoresSafeArea())
             .navigationTitle("More")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.kognizeBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        withAnimation { editMode = editMode == .active ? .inactive : .active }
+                    } label: {
+                        Text(editMode == .active ? "Done" : "Edit")
+                    }
+                }
+            }
         }
     }
 
@@ -106,6 +128,8 @@ struct MoreView: View {
             PortfolioBreakdownView()
         case .receiptScanner:
             ReceiptScannerView()
+        case .subscriptionCentre:
+            SubscriptionCentreView()
         }
     }
 }

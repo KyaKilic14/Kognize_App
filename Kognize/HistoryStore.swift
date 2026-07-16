@@ -15,6 +15,7 @@ enum HistoryEntryContent {
     case portfolioBreakdown(diversification: String, dividendEstimate: String, considerations: [String])
     case askKogConversation(messages: [ChatMessage])
     case receiptScanner(merchant: String, date: Date, amount: Double, category: String, messages: [ChatMessage])
+    case subscriptionCentre(name: String, cost: Double, frequency: String, messages: [ChatMessage])
 }
 
 struct HistoryEntry: Identifiable {
@@ -28,6 +29,7 @@ struct HistoryEntry: Identifiable {
         case .portfolioBreakdown: return "Portfolio Breakdown"
         case .askKogConversation: return "Ask Kog"
         case .receiptScanner: return "Receipt Scanner"
+        case .subscriptionCentre: return "Subscription Centre"
         }
     }
 
@@ -36,6 +38,7 @@ struct HistoryEntry: Identifiable {
         case .portfolioBreakdown: return "chart.pie.fill"
         case .askKogConversation: return "message.fill"
         case .receiptScanner: return "doc.text.viewfinder"
+        case .subscriptionCentre: return "arrow.triangle.2.circlepath"
         }
     }
 }

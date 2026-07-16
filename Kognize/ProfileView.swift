@@ -27,6 +27,29 @@ struct ProfileView: View {
             }
 
             Section {
+                ZStack(alignment: .topLeading) {
+                    if UserProfileStore.shared.bio.isEmpty {
+                        Text("Tell Kog a bit about yourself — your goals, job, school status, or anything else relevant. This helps tailor the questions Kog asks you elsewhere in the app.")
+                            .font(.subheadline)
+                            .foregroundStyle(.primary.opacity(0.35))
+                            .padding(.top, 8)
+                            .padding(.leading, 5)
+                            .allowsHitTesting(false)
+                    }
+
+                    TextEditor(text: Binding(
+                        get: { UserProfileStore.shared.bio },
+                        set: { UserProfileStore.shared.bio = $0 }
+                    ))
+                    .frame(minHeight: 120)
+                    .scrollContentBackground(.hidden)
+                    .foregroundStyle(.primary)
+                }
+            } header: {
+                Text("About You").foregroundStyle(.primary)
+            }
+
+            Section {
                 NavigationLink {
                     ComingSoonView(title: "Change Passcode", systemImage: "lock.rotation")
                 } label: {

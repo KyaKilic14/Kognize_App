@@ -35,6 +35,14 @@ final class FinanceStore {
         spendingTotal += amount
         score = max(score - 1, 30)
     }
+
+    /// Same illustrative-placeholder caveat as recordReceipt -- a one-way
+    /// nudge fired once per new subscription, not a live recalculation, so
+    /// editing/deleting a subscription later doesn't reverse it.
+    func recordSubscription(cost: Double, frequency: SubscriptionFrequency) {
+        spendingTotal += cost * frequency.monthlyMultiplier
+        score = max(score - 1, 30)
+    }
 }
 
 func formattedGBP(_ value: Double) -> String {
