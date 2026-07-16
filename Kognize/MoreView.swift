@@ -14,6 +14,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
     case journal
     case spendingContext
     case portfolioBreakdown
+    case receiptScanner
 
     var id: String { rawValue }
 
@@ -22,6 +23,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .journal: return "Journal"
         case .spendingContext: return "Spending Context"
         case .portfolioBreakdown: return "Portfolio Breakdown"
+        case .receiptScanner: return "Receipt Scanner"
         }
     }
 
@@ -30,6 +32,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .journal: return "Free-form notes Kog can reference later"
         case .spendingContext: return "What's been affecting your spending lately"
         case .portfolioBreakdown: return "Upload a portfolio screenshot for a preview breakdown"
+        case .receiptScanner: return "Scan or upload a receipt to log a purchase"
         }
     }
 
@@ -38,6 +41,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .journal: return "book.closed"
         case .spendingContext: return "bolt.heart.fill"
         case .portfolioBreakdown: return "chart.pie.fill"
+        case .receiptScanner: return "doc.text.viewfinder"
         }
     }
 }
@@ -100,6 +104,8 @@ struct MoreView: View {
             SpendingStressView()
         case .portfolioBreakdown:
             PortfolioBreakdownView()
+        case .receiptScanner:
+            ReceiptScannerView()
         }
     }
 }

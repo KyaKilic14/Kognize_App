@@ -2,8 +2,10 @@
 //  DashboardWidgets.swift
 //  Kognize
 //
-//  Individual Dashboard card views. All values are static placeholders
-//  until real (sandbox) data exists — Build order steps 3-5.
+//  Individual Dashboard card views. Score/Spending/Income read live from
+//  FinanceStore (illustrative placeholder math, e.g. updated by Receipt
+//  Scanner) — everything else is still a static placeholder until real
+//  (sandbox) data exists — Build order steps 3-5.
 //
 
 import SwiftUI
@@ -45,8 +47,8 @@ struct ScoreCardWidget: View {
             WidgetDetailView(
                 title: "Score",
                 systemImage: "gauge.medium",
-                headlineValue: "82",
-                headlineLabel: "Healthy",
+                headlineValue: "\(FinanceStore.shared.score)",
+                headlineLabel: FinanceStore.shared.band,
                 kogInsight: "Your score has been steady this week. Spending is in line with your typical month, and no unusual activity was detected."
             )
         } label: {
@@ -60,15 +62,15 @@ struct ScoreCardWidget: View {
                         .stroke(Color.primary.opacity(0.08), lineWidth: 10)
 
                     Circle()
-                        .trim(from: 0, to: 0.82)
+                        .trim(from: 0, to: Double(FinanceStore.shared.score) / 100)
                         .stroke(Color.kognizePurple, style: StrokeStyle(lineWidth: 10, lineCap: .round))
                         .rotationEffect(.degrees(-90))
 
                     VStack(spacing: 4) {
-                        Text("82")
+                        Text("\(FinanceStore.shared.score)")
                             .font(.system(size: 40, weight: .bold))
                             .foregroundStyle(.primary)
-                        Text("Healthy")
+                        Text(FinanceStore.shared.band)
                             .font(.subheadline)
                             .foregroundStyle(Color.kognizePurple)
                     }
@@ -138,12 +140,12 @@ struct SpendingTrackerWidget: View {
             WidgetDetailView(
                 title: "Spending",
                 systemImage: "arrow.down.circle.fill",
-                headlineValue: "£1,240",
+                headlineValue: formattedGBP(FinanceStore.shared.spendingTotal),
                 headlineLabel: "This month",
                 kogInsight: "Spending is 12% above your typical month, mostly in dining and transport."
             )
         } label: {
-            metricRow(icon: "arrow.down.circle.fill", title: "Spending", value: "£1,240", subtitle: "This month · +12% vs. usual")
+            metricRow(icon: "arrow.down.circle.fill", title: "Spending", value: formattedGBP(FinanceStore.shared.spendingTotal), subtitle: "This month · +12% vs. usual")
         }
         .buttonStyle(.plain)
     }
@@ -155,12 +157,12 @@ struct IncomeTrackerWidget: View {
             WidgetDetailView(
                 title: "Income",
                 systemImage: "arrow.up.circle.fill",
-                headlineValue: "£2,850",
+                headlineValue: formattedGBP(FinanceStore.shared.incomeTotal),
                 headlineLabel: "This month",
                 kogInsight: "Income is consistent with your typical month."
             )
         } label: {
-            metricRow(icon: "arrow.up.circle.fill", title: "Income", value: "£2,850", subtitle: "This month · on par with usual")
+            metricRow(icon: "arrow.up.circle.fill", title: "Income", value: formattedGBP(FinanceStore.shared.incomeTotal), subtitle: "This month · on par with usual")
         }
         .buttonStyle(.plain)
     }

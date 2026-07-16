@@ -170,7 +170,8 @@ postmortem.
 iOS App (SwiftUI)
   |-- Face ID gate + disclaimer splash
   |-- Bottom tab bar: Dashboard / Ask Kog / Goals / More (More is a hub
-  |   of feature cards: Journal, Spending Context, Portfolio Breakdown)
+  |   of feature cards: Journal, Spending Context, Portfolio Breakdown,
+  |   Receipt Scanner)
   |-- Floating hamburger menu: Profile, Connected Accounts, App Security,
   |   Notifications, Themes, Subscription, Send Feedback
   |
@@ -243,8 +244,8 @@ the safeguard for choosing fuller raw-data retention over the "pass through" def
   to something broader, since a hub directly solves "where do new features go" and a rename
   doesn't. Cards: Journal (un-nested back to just entries — Spending Context used to live inside
   it via a segmented control, now promoted to its own card), Spending Context, Portfolio
-  Breakdown. New features generally get a card here rather than a new tab or a menu item — ask
-  the team lead only if something seems tab-bar-worthy on its own merits.
+  Breakdown, Receipt Scanner. New features generally get a card here rather than a new tab or a
+  menu item — ask the team lead only if something seems tab-bar-worthy on its own merits.
 - **Portfolio Breakdown (`PortfolioBreakdownView.swift`)** — upload a portfolio screenshot, a
   canned Q&A (reuses `ChatBubbleViews.swift`, shared with Ask Kog), then a results screen. UI
   shell only, same as Ask Kog — no real image analysis. Copy is deliberately descriptive, never
@@ -259,13 +260,28 @@ the safeguard for choosing fuller raw-data retention over the "pass through" def
   recommendation under UK rules regardless of phrasing — Kya agreed to the generic-education
   version instead. **Do not personalize this section to a specific portfolio/goals** without
   raising that same flag again first.
+- **Receipt Scanner (`ReceiptScannerView.swift`)** — take a photo (camera, via
+  `CameraCaptureView.swift` wrapping `UIImagePickerController` — `PhotosPicker` alone can't open
+  the camera, only the library) or upload one, then an **editable** breakdown (merchant, date,
+  amount, category — pre-filled with canned "extracted" values the user can correct), then a
+  canned Q&A (reuses the same chat bubbles), then save. The Q&A is context-aware in a small,
+  deliberate way: if the merchant name contains "Apple," it asks a business-write-off-vs-personal
+  question — a demonstration of what real per-merchant questions would look like, not real
+  detection. First feature whose result is actually visible elsewhere in the app: on save it
+  calls `FinanceStore.shared.recordReceipt(amount:)`, which Dashboard's Score/Spending/Income
+  widgets read from live (`DashboardWidgets.swift`) — illustrative placeholder math (spend adds
+  to the total, score nudges down slightly), not a real scoring algorithm. Needs the camera
+  permission key `INFOPLIST_KEY_NSCameraUsageDescription` in `project.pbxproj` (`PhotosPicker`
+  needed none). "Skip for now" during the Q&A skips the whole step at once, not question-by-
+  question.
 - **History (`HistoryView.swift` / `HistoryStore.swift`)** — a hamburger-menu item, not a More
   card, since it's a read-only record of what's already happened rather than a feature to use.
   `HistoryStore.shared` is an `@Observable` singleton (same pattern as `ThemeManager`) holding
   `[HistoryEntry]`; `HistoryEntryContent` is an enum so new features can save into the same store
   without changing `HistoryView` itself. Currently fed by: Portfolio Breakdown (auto-saves on
-  reaching Results) and Ask Kog (explicit "save conversation" toolbar button, which also clears
-  the chat to start fresh — Ask Kog has no natural session boundary otherwise). In-memory only,
+  reaching Results), Receipt Scanner (auto-saves on completing/skipping the Q&A), and Ask Kog
+  (explicit "save conversation" toolbar button, which also clears the chat to start fresh — Ask
+  Kog has no natural session boundary otherwise). In-memory only,
   same as everything it saves — lost on relaunch until a real persistence layer exists.
 - **Floating hamburger menu** (top right, fixed regardless of tab/scroll): Profile, History,
   Connected Accounts management, App Security, Notifications, Themes, Subscription, Send

@@ -3,9 +3,10 @@
 //  Kognize
 //
 //  Shared, in-memory (no persistence layer yet) store of past feature
-//  results, read-only once saved. Currently fed by Portfolio Breakdown and
-//  Ask Kog; the enum-based content shape means future features can plug
-//  into the same store the same way, without changing HistoryView itself.
+//  results, read-only once saved. Currently fed by Portfolio Breakdown,
+//  Ask Kog, and Receipt Scanner; the enum-based content shape means future
+//  features can plug into the same store the same way, without changing
+//  HistoryView itself.
 //
 
 import Foundation
@@ -13,6 +14,7 @@ import Foundation
 enum HistoryEntryContent {
     case portfolioBreakdown(diversification: String, dividendEstimate: String, considerations: [String])
     case askKogConversation(messages: [ChatMessage])
+    case receiptScanner(merchant: String, date: Date, amount: Double, category: String, messages: [ChatMessage])
 }
 
 struct HistoryEntry: Identifiable {
@@ -25,6 +27,7 @@ struct HistoryEntry: Identifiable {
         switch content {
         case .portfolioBreakdown: return "Portfolio Breakdown"
         case .askKogConversation: return "Ask Kog"
+        case .receiptScanner: return "Receipt Scanner"
         }
     }
 
@@ -32,6 +35,7 @@ struct HistoryEntry: Identifiable {
         switch content {
         case .portfolioBreakdown: return "chart.pie.fill"
         case .askKogConversation: return "message.fill"
+        case .receiptScanner: return "doc.text.viewfinder"
         }
     }
 }

@@ -39,7 +39,7 @@ struct HistoryView: View {
                 .font(.title2.bold())
                 .foregroundStyle(.primary)
 
-            Text("Completed Portfolio Breakdowns and saved Ask Kog conversations will show up here.")
+            Text("Completed Portfolio Breakdowns, scanned receipts, and saved Ask Kog conversations will show up here.")
                 .font(.subheadline)
                 .foregroundStyle(.primary)
                 .multilineTextAlignment(.center)
@@ -106,6 +106,8 @@ struct HistoryDetailView: View {
                     portfolioContent(diversification: diversification, dividendEstimate: dividendEstimate, considerations: considerations)
                 case .askKogConversation(let messages):
                     conversationContent(messages: messages)
+                case .receiptScanner(let merchant, let date, let amount, let category, let messages):
+                    receiptContent(merchant: merchant, date: date, amount: amount, category: category, messages: messages)
                 }
             }
             .padding(20)
@@ -142,6 +144,29 @@ struct HistoryDetailView: View {
         VStack(spacing: 12) {
             ForEach(messages) { message in
                 ChatBubble(message: message)
+            }
+        }
+    }
+
+    private func receiptContent(merchant: String, date: Date, amount: Double, category: String, messages: [ChatMessage]) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            resultCard(icon: "storefront", heading: "Merchant", body: merchant)
+            resultCard(icon: "calendar", heading: "Date", body: date.formatted(date: .long, time: .omitted))
+            resultCard(icon: "banknote.fill", heading: "Amount", body: formattedGBP(amount))
+            resultCard(icon: "tag.fill", heading: "Category", body: category)
+
+            if !messages.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "sparkles").foregroundStyle(Color.kognizePurple)
+                        Text("Conversation").font(.headline).foregroundStyle(.primary)
+                    }
+                    ForEach(messages) { message in
+                        ChatBubble(message: message)
+                    }
+                }
+                .padding(20)
+                .background(widgetCardBackground())
             }
         }
     }
