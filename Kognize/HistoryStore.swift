@@ -16,6 +16,7 @@ enum HistoryEntryContent {
     case askKogConversation(messages: [ChatMessage])
     case receiptScanner(merchant: String, date: Date, amount: Double, category: String, messages: [ChatMessage])
     case subscriptionCentre(name: String, cost: Double, frequency: String, messages: [ChatMessage])
+    case netWorthLifeEvent(category: String, detail: String, amount: Double?, wasApplied: Bool)
 }
 
 struct HistoryEntry: Identifiable {
@@ -30,6 +31,7 @@ struct HistoryEntry: Identifiable {
         case .askKogConversation: return "Ask Kog"
         case .receiptScanner: return "Receipt Scanner"
         case .subscriptionCentre: return "Subscription Centre"
+        case .netWorthLifeEvent: return "Net Worth"
         }
     }
 
@@ -39,6 +41,7 @@ struct HistoryEntry: Identifiable {
         case .askKogConversation: return "message.fill"
         case .receiptScanner: return "doc.text.viewfinder"
         case .subscriptionCentre: return "arrow.triangle.2.circlepath"
+        case .netWorthLifeEvent: return "chart.pie.fill"
         }
     }
 }

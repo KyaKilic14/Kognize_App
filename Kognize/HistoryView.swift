@@ -110,6 +110,8 @@ struct HistoryDetailView: View {
                     receiptContent(merchant: merchant, date: date, amount: amount, category: category, messages: messages)
                 case .subscriptionCentre(let name, let cost, let frequency, let messages):
                     subscriptionContent(name: name, cost: cost, frequency: frequency, messages: messages)
+                case .netWorthLifeEvent(let category, let detail, let amount, let wasApplied):
+                    netWorthContent(category: category, detail: detail, amount: amount, wasApplied: wasApplied)
                 }
             }
             .padding(20)
@@ -192,6 +194,26 @@ struct HistoryDetailView: View {
                 .padding(20)
                 .background(widgetCardBackground())
             }
+        }
+    }
+
+    private func netWorthContent(category: String, detail: String, amount: Double?, wasApplied: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            resultCard(icon: "tag.fill", heading: "Category", body: category)
+
+            if !detail.isEmpty {
+                resultCard(icon: "text.alignleft", heading: "Details", body: detail)
+            }
+
+            if let amount {
+                resultCard(icon: "banknote.fill", heading: "Amount", body: formattedGBP(amount))
+            }
+
+            resultCard(
+                icon: wasApplied ? "checkmark.circle.fill" : "note.text",
+                heading: "Net Worth",
+                body: wasApplied ? "Applied to your Net Worth total." : "Saved as a note only — Net Worth wasn't changed."
+            )
         }
     }
 }

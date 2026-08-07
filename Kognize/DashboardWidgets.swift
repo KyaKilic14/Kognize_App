@@ -183,12 +183,12 @@ struct InvestmentTrackerWidget: View {
                 WidgetDetailView(
                     title: "Investments",
                     systemImage: "chart.line.uptrend.xyaxis",
-                    headlineValue: "£4,120",
+                    headlineValue: formattedGBP(FinanceStore.shared.investmentsTotal),
                     headlineLabel: "Portfolio value",
                     kogInsight: "Your portfolio is up slightly this month. This is observational only — Kog never recommends buying or selling."
                 )
             } label: {
-                metricRow(icon: "chart.line.uptrend.xyaxis", title: "Investments", value: "£4,120", subtitle: "Portfolio value")
+                metricRow(icon: "chart.line.uptrend.xyaxis", title: "Investments", value: formattedGBP(FinanceStore.shared.investmentsTotal), subtitle: "Portfolio value")
             }
             .buttonStyle(.plain)
 
@@ -251,6 +251,17 @@ struct ScoreHistoryWidget: View {
             }
             .padding(18)
             .background(widgetCardBackground())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+struct NetWorthWidget: View {
+    var body: some View {
+        NavigationLink {
+            NetWorthDetailView()
+        } label: {
+            metricRow(icon: "chart.pie.fill", title: "Net Worth", value: formattedGBP(FinanceStore.shared.netWorth), subtitle: "Cash, investments & manual entries")
         }
         .buttonStyle(.plain)
     }

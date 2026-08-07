@@ -19,7 +19,19 @@ final class FinanceStore {
     var incomeTotal: Double = 2850
     var score: Int = 82
 
+    // Net worth components -- illustrative placeholders, same as everything
+    // else here, until a real aggregator/backend exists.
+    var cashTotal: Double = 1850
+    var investmentsTotal: Double = 4120
+    var manualAssetsTotal: Double = 0
+    var liabilitiesTotal: Double = 0
+    var netWorthAdjustments: Double = 0
+
     private init() {}
+
+    var netWorth: Double {
+        cashTotal + investmentsTotal + manualAssetsTotal - liabilitiesTotal + netWorthAdjustments
+    }
 
     var band: String {
         switch score {
@@ -42,6 +54,14 @@ final class FinanceStore {
     func recordSubscription(cost: Double, frequency: SubscriptionFrequency) {
         spendingTotal += cost * frequency.monthlyMultiplier
         score = max(score - 1, 30)
+    }
+
+    /// Only called once a life event's rule checklist has been confirmed by
+    /// the user -- pass a signed value (positive = increase, negative =
+    /// decrease). See NetWorthDetailView's relevanceRules() for the
+    /// rules-and-confirmation mechanic that decides whether this gets called.
+    func applyLifeEventAdjustment(_ amount: Double) {
+        netWorthAdjustments += amount
     }
 }
 

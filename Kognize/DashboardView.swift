@@ -12,6 +12,7 @@ import SwiftUI
 private enum DashboardWidgetKind: String, CaseIterable, Identifiable {
     case score
     case kogSummary
+    case netWorth
     case spending
     case income
     case scoreHistory
@@ -119,6 +120,8 @@ struct DashboardView: View {
             ScoreCardWidget()
         case .kogSummary:
             KogSummaryWidget()
+        case .netWorth:
+            NetWorthWidget()
         case .spending:
             SpendingTrackerWidget()
         case .income:
