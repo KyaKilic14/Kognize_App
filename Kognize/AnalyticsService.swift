@@ -10,19 +10,18 @@
 //  FinanceStore/NetWorthStore/SubscriptionStore/etc. -- this boundary is
 //  the whole reason this file is separate from everything else in the app.
 //
-//  SETUP REQUIRED: create a free Supabase project, run the `events`/
-//  `feedback` table SQL and anonymous-INSERT-only RLS policies from the
-//  plan this was built from, then replace the two placeholder constants
-//  below with the real project URL and anon public key. Until then, calls
-//  here fail silently (see `send(to:body:)`) -- safe to ship without
-//  blocking on account creation, but nothing is actually recorded yet.
+//  Points at Kya's live "Kognize" Supabase project (eu-central-1). Uses
+//  the publishable key -- Supabase's current name for what used to be
+//  called the anon key, still safe to embed in a client app as long as
+//  RLS only allows anonymous INSERT, which is how the events/feedback
+//  tables were set up.
 //
 
 import Foundation
 
 private enum SupabaseConfig {
-    static let projectURL = "https://YOUR-PROJECT.supabase.co"
-    static let anonKey = "YOUR-ANON-PUBLIC-KEY"
+    static let projectURL = "https://jemnaiulimwvwknnqnzm.supabase.co"
+    static let anonKey = "sb_publishable_IdYvFs6s3b1IgIfIkCm0mA_42INYF-M"
 }
 
 @Observable
