@@ -72,9 +72,6 @@ struct MoreView: View {
                         card(for: kind)
                     }
                     .buttonStyle(.plain)
-                    .simultaneousGesture(TapGesture().onEnded {
-                        AnalyticsService.shared.track("feature_opened", metadata: ["feature": kind.rawValue])
-                    })
                 }
                 .onMove { indices, newOffset in
                     featureOrder.move(fromOffsets: indices, toOffset: newOffset)
@@ -130,21 +127,26 @@ struct MoreView: View {
 
     @ViewBuilder
     private func destination(for kind: MoreFeatureKind) -> some View {
-        switch kind {
-        case .journal:
-            JournalView()
-        case .spendingContext:
-            SpendingStressView()
-        case .portfolioBreakdown:
-            PortfolioBreakdownView()
-        case .receiptScanner:
-            ReceiptScannerView()
-        case .subscriptionCentre:
-            SubscriptionCentreView()
-        case .transactions:
-            TransactionsView()
-        case .canAfford:
-            CanAffordView()
+        Group {
+            switch kind {
+            case .journal:
+                JournalView()
+            case .spendingContext:
+                SpendingStressView()
+            case .portfolioBreakdown:
+                PortfolioBreakdownView()
+            case .receiptScanner:
+                ReceiptScannerView()
+            case .subscriptionCentre:
+                SubscriptionCentreView()
+            case .transactions:
+                TransactionsView()
+            case .canAfford:
+                CanAffordView()
+            }
+        }
+        .onAppear {
+            AnalyticsService.shared.track("feature_opened", metadata: ["feature": kind.rawValue])
         }
     }
 }
