@@ -112,6 +112,8 @@ struct HistoryDetailView: View {
                     subscriptionContent(name: name, cost: cost, frequency: frequency, messages: messages)
                 case .netWorthLifeEvent(let category, let detail, let amount, let wasApplied):
                     netWorthContent(category: category, detail: detail, amount: amount, wasApplied: wasApplied)
+                case .affordabilityCheck(let item, let amount, let intent, let score, let summary):
+                    affordabilityContent(item: item, amount: amount, intent: intent, score: score, summary: summary)
                 }
             }
             .padding(20)
@@ -214,6 +216,16 @@ struct HistoryDetailView: View {
                 heading: "Net Worth",
                 body: wasApplied ? "Applied to your Net Worth total." : "Saved as a note only — Net Worth wasn't changed."
             )
+        }
+    }
+
+    private func affordabilityContent(item: String, amount: Double, intent: String, score: Int, summary: String) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            resultCard(icon: "tag.fill", heading: "Item", body: item)
+            resultCard(icon: "banknote.fill", heading: "Amount", body: formattedGBP(amount))
+            resultCard(icon: "square.grid.2x2", heading: "Framed As", body: intent)
+            resultCard(icon: "cart.badge.questionmark", heading: "Affordability Comfort", body: "\(score)/10")
+            resultCard(icon: "sparkles", heading: "Kog's Take", body: summary)
         }
     }
 }

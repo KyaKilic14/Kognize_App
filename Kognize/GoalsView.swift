@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct GoalsView: View {
-    @State private var goals: [Goal] = []
     @State private var isAddGoalPresented = false
 
     var body: some View {
         NavigationStack {
             Group {
-                if goals.isEmpty {
+                if GoalsStore.shared.goals.isEmpty {
                     emptyState
                 } else {
                     goalList
@@ -42,7 +41,7 @@ struct GoalsView: View {
         }
         .sheet(isPresented: $isAddGoalPresented) {
             AddGoalView { goal in
-                goals.append(goal)
+                GoalsStore.shared.goals.append(goal)
             }
         }
     }
@@ -84,7 +83,7 @@ struct GoalsView: View {
     private var goalList: some View {
         ScrollView {
             VStack(spacing: 16) {
-                ForEach(goals) { goal in
+                ForEach(GoalsStore.shared.goals) { goal in
                     NavigationLink {
                         GoalDetailView(goal: goal)
                     } label: {

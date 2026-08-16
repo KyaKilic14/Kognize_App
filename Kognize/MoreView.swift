@@ -17,6 +17,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
     case receiptScanner
     case subscriptionCentre
     case transactions
+    case canAfford
 
     var id: String { rawValue }
 
@@ -28,6 +29,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .receiptScanner: return "Receipt Scanner"
         case .subscriptionCentre: return "Subscription Centre"
         case .transactions: return "Transactions"
+        case .canAfford: return "Can I Afford This?"
         }
     }
 
@@ -39,6 +41,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .receiptScanner: return "Scan or upload a receipt to log a purchase"
         case .subscriptionCentre: return "Track your recurring subscriptions and their cost"
         case .transactions: return "Kog sorts your spending and income, and learns from your answers"
+        case .canAfford: return "Check how a purchase fits your money and goals"
         }
     }
 
@@ -50,6 +53,7 @@ private enum MoreFeatureKind: String, CaseIterable, Identifiable {
         case .receiptScanner: return "doc.text.viewfinder"
         case .subscriptionCentre: return "arrow.triangle.2.circlepath"
         case .transactions: return "arrow.up.arrow.down.circle.fill"
+        case .canAfford: return "cart.badge.questionmark"
         }
     }
 }
@@ -136,6 +140,8 @@ struct MoreView: View {
             SubscriptionCentreView()
         case .transactions:
             TransactionsView()
+        case .canAfford:
+            CanAffordView()
         }
     }
 }
