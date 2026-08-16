@@ -72,6 +72,9 @@ struct MoreView: View {
                         card(for: kind)
                     }
                     .buttonStyle(.plain)
+                    .simultaneousGesture(TapGesture().onEnded {
+                        AnalyticsService.shared.track("feature_opened", metadata: ["feature": kind.rawValue])
+                    })
                 }
                 .onMove { indices, newOffset in
                     featureOrder.move(fromOffsets: indices, toOffset: newOffset)

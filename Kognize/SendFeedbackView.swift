@@ -2,9 +2,9 @@
 //  SendFeedbackView.swift
 //  Kognize
 //
-//  Frontend-only: there's no admin website/feedback board to submit to
-//  yet (master plan section 10), so this just confirms locally. The real
-//  submit-to-backend call is a later build step.
+//  Submits to the lightweight interim analytics/feedback pipeline
+//  (AnalyticsService.swift) -- not the real admin website/feedback board
+//  from the master plan yet, but genuinely leaves the device now.
 //
 
 import SwiftUI
@@ -80,7 +80,7 @@ struct SendFeedbackView: View {
                 .disabled(message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
                 if didSubmit {
-                    Text("This doesn't reach a real team yet — the feedback board is a later build step.")
+                    Text("Thanks — this has been sent.")
                         .font(.caption)
                         .foregroundStyle(.primary)
                 }
@@ -123,6 +123,7 @@ struct SendFeedbackView: View {
     }
 
     private func submit() {
+        AnalyticsService.shared.submitFeedback(category: category.rawValue, message: message)
         didSubmit = true
     }
 }

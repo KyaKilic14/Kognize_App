@@ -25,6 +25,7 @@ struct AppRootView: View {
                 }
             case .authenticating:
                 FaceIDGateView {
+                    AnalyticsService.shared.track("app_open")
                     stage = .dashboard
                 }
             case .dashboard:
