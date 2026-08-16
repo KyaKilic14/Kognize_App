@@ -31,6 +31,13 @@ struct AccountsDetailView: View {
             } header: {
                 Text("Manual entries").foregroundStyle(.primary)
             }
+
+            Section {
+                Label("TransUnion not connected", systemImage: "person.text.rectangle")
+                    .foregroundStyle(.primary)
+            } header: {
+                Text("Credit Score").foregroundStyle(.primary)
+            }
         }
         .scrollContentBackground(.hidden)
         .background(Color.kognizeBackground.ignoresSafeArea())

@@ -256,6 +256,44 @@ struct ScoreHistoryWidget: View {
     }
 }
 
+struct CreditScoreWidget: View {
+    var body: some View {
+        NavigationLink {
+            CreditScoreDetailView()
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "person.text.rectangle.fill")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(Color.kognizePurple)
+                    .frame(width: 32)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Credit Score")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.primary)
+                    HStack(spacing: 6) {
+                        Text(CreditScoreStore.shared.band)
+                            .font(.caption)
+                            .foregroundStyle(.primary)
+                        Text("· Not Connected")
+                            .font(.caption)
+                            .foregroundStyle(.primary.opacity(0.5))
+                    }
+                }
+
+                Spacer()
+
+                Text("\(CreditScoreStore.shared.currentScore)")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+            }
+            .padding(16)
+            .background(widgetCardBackground())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 struct NetWorthWidget: View {
     var body: some View {
         NavigationLink {
