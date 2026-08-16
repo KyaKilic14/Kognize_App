@@ -16,6 +16,18 @@ struct MenuView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                // Purely decorative -- reinforces the swipe-down-to-close
+                // gesture without an exit button, per Kya's call. The
+                // system's own sheet grabber sits above the nav bar and is
+                // easy to miss; this sits right under the "Menu" title
+                // where it's actually noticed.
+                Image(systemName: "chevron.compact.down")
+                    .font(.system(size: 22, weight: .medium))
+                    .foregroundStyle(.primary.opacity(0.25))
+                    .padding(.top, 4)
+                    .padding(.bottom, 8)
+                    .accessibilityHidden(true)
+
                 List {
                     NavigationLink {
                         ProfileView(onSignOut: onSignOut)
